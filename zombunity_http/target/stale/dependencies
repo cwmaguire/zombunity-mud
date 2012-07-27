@@ -1,0 +1,1 @@
+([:dependencies [[org.clojure/clojure "1.4.0"] [org.webbitserver/webbit "0.4.14"] [org.clojure/java.jdbc "0.2.3"]]])

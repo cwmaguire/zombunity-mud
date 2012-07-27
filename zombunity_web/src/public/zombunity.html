@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="goog/base.js"></script>
+    <script type="text/javascript" src="zombunity.js"></script>
+    <script type="text/javascript">
+        goog.require('zombunity.gui');
+        goog.require('zombunity.core');
+    </script>
+    <script>
+        zombunity.core.register_listeners();
+    </script>
+</head>
+<body>
+<h1>Zombunity MUD</h1>
+<button id="conn-disconn-btn" onclick="zombunity.gui.connect();">Connect</button>
+<span id="conn-disconn-flg" style="color:red;">disconnected</span>
+<br><br>
+
+MUD Commands: <input id="mud-input" type="text" value=""/>
+
+<button onclick="zombunity.gui.send();">Send</button>
+<button onclick="zombunity.gui.text();">Add as text</button>
+
+<br>
+<br>
+Text: <textarea id="text">Some text to start</textarea>
+
+</body>
+</html>
