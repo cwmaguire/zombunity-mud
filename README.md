@@ -6,6 +6,7 @@ Zombunity MUD
 An event-driven web MUD framework consisting of a MUD server, http server and web client:
 
 Web Client:
+-----------
 
   A ClojureScript web page that uses an event dispatch model to communicate between namespaces in place of
   a traditional MVC model.
@@ -13,6 +14,7 @@ Web Client:
   Uses Google Closure WebSocket to communicate with an HTTP server.
 
 HTTP Server:
+------------
 
   A Webbit server that does three things:
 
@@ -21,6 +23,7 @@ HTTP Server:
     - polls the client message queue for messages from the server and sends them to the appropriate client.
 
 MUD Server:
+-----------
 
   A event dispatch system that does three things:
 
@@ -29,6 +32,7 @@ MUD Server:
     - dispatches events to daemons to process into more events
 
 Walkthrough:
+------------
 
     - Client types "attack bear"
     - web dispatch creates :input event
