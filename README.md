@@ -15,6 +15,7 @@ Web Client:
 HTTP Server:
 
   A Webbit server that does three things:
+
     - registers client connections with an ID
     - places text from the client into the MUD server message queue with it's ID
     - polls the client message queue for messages from the server and sends them to the appropriate client.
@@ -22,6 +23,7 @@ HTTP Server:
 MUD Server:
 
   A event dispatch system that does three things:
+  
     - polls the message queue for messages from clients
     - writes client messages to the message queue for the HTTP server to relay
     - dispatches events to daemons to process into more events
@@ -40,4 +42,4 @@ Walkthrough:
     - Client message events (:client) are put in the client message queue for the HTTP server
     - HTTP server polls the client message queue
     - HTTP server looks up client connection by connection ID in message
-    - HTTP server sends message to client via WebSocket connection. 
+    - HTTP server sends message to client via WebSocket connection.
