@@ -23,7 +23,7 @@ HTTP Server:
 MUD Server:
 
   A event dispatch system that does three things:
-  
+
     - polls the message queue for messages from clients
     - writes client messages to the message queue for the HTTP server to relay
     - dispatches events to daemons to process into more events
@@ -43,3 +43,5 @@ Walkthrough:
     - HTTP server polls the client message queue
     - HTTP server looks up client connection by connection ID in message
     - HTTP server sends message to client via WebSocket connection.
+    - web dispatch sends :message event
+    - web gui namespace displays message / updates gui
