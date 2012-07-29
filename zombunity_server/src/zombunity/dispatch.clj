@@ -8,6 +8,9 @@
 
 (def timer (atom nil))
 (def daemon-fns (atom {:client #{db/msg-client}}))
+(def process-fn-name "process-msg")
+(def reg-dispatch-fn-name "register-dispatch-fn")
+(def msg-type-var-name "msg-types")
 
 (defn dispatch
   "Dispatches messages either to a daemon or to the message-queue"
@@ -23,10 +26,15 @@
   []
   (filter #(re-find #"zombunity\.daemon" (str %)) (tools-ns/find-namespaces-on-classpath)))
 
-(defn register-daemon-event-fn
-  [fn event]
-  (let [fns (or (get @daemon-fns event) #{})]
-    (swap! daemon-fns assoc event (conj fns fn))))
+(defn register-daemon-msg-type-fn
+  [fn msg-type]
+  (let [fns (or (get @daemon-fns msg-type) #{})]
+    (swap! daemon-fns assoc msg-type (conj fns fn))))
+
+(defn get-ns-value
+  "Get a value from a var in a namespace using the namespace and a string containing the name of the var"
+  [ns var-name]
+  (var-get (ns-resolve ns (symbol var-name))))
 
 (defn register-daemon
   "registers the daemon in the daemon function map, registers
@@ -37,11 +45,11 @@
 
   (require [daemon-ns])
 
-  (if-let [events (var-get (ns-resolve daemon-ns (symbol "events")))]
-    (doall (map (partial register-daemon-event-fn (var-get (ns-resolve daemon-ns (symbol "process-msg")))) events))
-    (println "Did not find event list for " daemon-ns))
+  (if-let [msg-types (get-ns-value daemon-ns msg-type-var-name)]
+    (doall (map (partial register-daemon-msg-type-fn (get-ns-value daemon-ns process-fn-name)) msg-types))
+    (println "Did not find msg-type list for " daemon-ns))
 
-  (if-let [register-dispatch-fn (var-get (ns-resolve daemon-ns (symbol "register-dispatch-fn")))]
+  (if-let [register-dispatch-fn (get-ns-value daemon-ns reg-dispatch-fn-name)]
     (register-dispatch-fn dispatch)
     (println "Did not find register-dispatch-fn for " daemon-ns))
   nil)

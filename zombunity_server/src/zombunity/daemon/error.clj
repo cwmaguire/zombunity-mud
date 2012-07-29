@@ -1,6 +1,6 @@
 (ns zombunity.daemon.error)
 
-(def events [:error])
+(def msg-types [:error])
 
 (def ^:dynamic *dispatch-fn* (atom nil))
 

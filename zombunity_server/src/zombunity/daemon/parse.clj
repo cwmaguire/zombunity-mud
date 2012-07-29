@@ -1,7 +1,7 @@
 (ns zombunity.daemon.parse
   (:require [clojure.string :as str]))
 
-(def events [:parse])
+(def msg-types [:parse])
 
 (def ^:dynamic *dispatch-fn* (atom nil))
 
