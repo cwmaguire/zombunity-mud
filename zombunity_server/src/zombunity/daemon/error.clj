@@ -1,7 +1,6 @@
-(ns zombunity.daemon.parse
-  (:require [clojure.string :as str]))
+(ns zombunity.daemon.error)
 
-(def events [:parse])
+(def events [:error])
 
 (def ^:dynamic *dispatch-fn* (atom nil))
 
@@ -14,8 +13,5 @@
 
 
 (defn process-msg
-  [{:keys [conn-id text]}]
-  (if (not (str/blank? text))
-    (let [words (str/split text #" ")]
-      (@*dispatch-fn* {:type (first words) :args (rest words) :conn-id conn-id}))))
-
+  []
+  nil)
