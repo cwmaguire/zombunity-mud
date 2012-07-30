@@ -42,7 +42,7 @@
   []
   (let [task (proxy [TimerTask] []
     (run [] (proc-msgs-from-server)))]
-    (.schedule (new Timer true) task (long 0) (long 100))))
+    (.schedule (new Timer true) task (long 0) (long 2000))))
 
 (defn -main []
   (doto (WebServers/createWebServer 8080)
@@ -52,7 +52,8 @@
           (println "opened" c)
           (let [conn-id (swap! curr-conn-id inc)]
               (swap! id-conns assoc conn-id c)
-              (swap! conn-ids assoc c conn-id)))
+              (swap! conn-ids assoc c conn-id)
+              (db/msg-server (json/json-str {:type "login" :conn-id conn-id}))))
         (onClose [c]
           (println "closed" c)
           (let [conn-id (get @conn-ids c)]

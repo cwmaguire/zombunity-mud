@@ -32,4 +32,22 @@
   (jdbc/with-connection db
     (jdbc/insert-records "msg_to_client" {:json (json-str m)})))
 
+(defn select
+  "Run a select statment and return the results as a list of maps"
+  [stmt-params]
+  (jdbc/with-connection db
+      (jdbc/with-query-results rs stmt-params (doall rs))))
+
+(defn insert
+  "Run an insert statment with a table name and a map of column names (keywords or strings) to values"
+  [table column-vals]
+  (jdbc/with-connection db
+    (jdbc/insert-record table column-vals)))
+
+(defn update
+  "Run an update statement"
+  [table where-params column-values]
+  (jdbc/with-connection db
+    (jdbc/update-values table where-params column-values)))
+
 

@@ -6,21 +6,38 @@
             [clojure.string :as str]
             [clojure.tools.namespace :as tools-ns]))
 
+(def conns (atom {}))
+
+(defn register-user-conn
+  [{:keys [conn-id user-id]}]
+  (swap! conns assoc conn-id user-id))
+
 (def timer (atom nil))
-(def daemon-fns (atom {:client #{db/msg-client}}))
+(def daemon-fns (atom {:client #{db/msg-client}
+                       :user-logged-in #{register-user-conn}}))
 (def process-fn-name "process-msg")
 (def reg-dispatch-fn-name "register-dispatch-fn")
 (def msg-type-var-name "msg-types")
 
-(defn dispatch
-  "Dispatches messages either to a daemon or to the message-queue"
+(defn cmd-not-recognized
   [m]
-  (map #(% m) (get daemon-fns (keyword (:type m)) )))
+  (db/msg-client (assoc m :message (str "Command not recognized: " (m :type)))))
+
+(defn dispatch
+  "dispatch events for logged in users with the user-id or dispatch to the login daemon-fns"
+  [{:keys [conn-id type user-id] :as m}]
+  (let [regd-user-id (@conns conn-id user-id)]
+    (if (and
+          (nil? regd-user-id)
+          (not (#{:client :login-max-attempts :user-logged-in} (keyword type))))
+      (doall (map #(% m) (@daemon-fns :login)))
+      (doall (map #(% (assoc m :user-id regd-user-id)) (get @daemon-fns (keyword type) [cmd-not-recognized]))))))
 
 (defn process-messages
   "Grabs messages form the database and dispatches them to the appropriate daemon"
   []
   (doall (map dispatch (db/get-messages))))
+
 
 (defn find-daemons
   []
@@ -64,4 +81,4 @@
   []
   (let [task (proxy [TimerTask] []
     (run [] (process-messages)))]
-    (.schedule (reset! timer (new Timer true)) task (long 0) (long 100))))
+    (.schedule (reset! timer (new Timer true)) task (long 0) (long 2000))))

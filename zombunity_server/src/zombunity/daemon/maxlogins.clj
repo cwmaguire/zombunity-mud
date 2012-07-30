@@ -1,7 +1,7 @@
-(ns zombunity.daemon.parse
+(ns zombunity.daemon.maxlogins
   (:require [clojure.string :as str]))
 
-(def msg-types [:text])
+(def msg-types [:login-max-attempts])
 
 (def ^:dynamic *dispatch-fn* (atom nil))
 
@@ -15,7 +15,5 @@
 
 (defn process-msg
   [{:keys [conn-id text]}]
-  (if (not (str/blank? text))
-    (let [words (str/split text #" ")]
-      (@*dispatch-fn* {:type (first words) :args (rest words) :conn-id conn-id}))))
+  (@*dispatch-fn* {:type :client :conn-id conn-id :message "Max login attempts exceeded!"}))
 
