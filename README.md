@@ -5,6 +5,14 @@ Zombunity MUD
 
 An event-driven web MUD framework consisting of a MUD server, http server and web client:
 
+YouTube Code Tutorials:
+-----------------------
+JDBC Gotchas: http://www.youtube.com/watch?v=bbScWWj_sPU
+Registering Daemons: http://www.youtube.com/watch?v=HzMQ8c3PWiE
+Basic Framework: http://www.youtube.com/watch?v=sKdL5onIiWQ
+WebSocket Tutorial: http://www.youtube.com/watch?v=Jl69WXhiX2w
+Compiling ClojureScript: http://www.youtube.com/watch?v=_25R3MMB_H8
+
 Web Client:
 -----------
 
