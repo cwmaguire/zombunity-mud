@@ -7,11 +7,11 @@ An event-driven web MUD framework consisting of a MUD server, http server and we
 
 YouTube Code Tutorials:
 -----------------------
-JDBC Gotchas: http://www.youtube.com/watch?v=bbScWWj_sPU
-Registering Daemons: http://www.youtube.com/watch?v=HzMQ8c3PWiE
-Basic Framework: http://www.youtube.com/watch?v=sKdL5onIiWQ
-WebSocket Tutorial: http://www.youtube.com/watch?v=Jl69WXhiX2w
-Compiling ClojureScript: http://www.youtube.com/watch?v=_25R3MMB_H8
+JDBC Gotchas: http://www.youtube.com/watch?v=bbScWWj_sPU <br>
+Registering Daemons: http://www.youtube.com/watch?v=HzMQ8c3PWiE <br>
+Basic Framework: http://www.youtube.com/watch?v=sKdL5onIiWQ <br>
+WebSocket Tutorial: http://www.youtube.com/watch?v=Jl69WXhiX2w <br>
+Compiling ClojureScript: http://www.youtube.com/watch?v=_25R3MMB_H8 <br>
 
 Web Client:
 -----------
