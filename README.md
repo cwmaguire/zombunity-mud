@@ -142,7 +142,11 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
     Put the cursor inside the file
 
+    Press Ctrl+Shift+L or go to Tools -> Clojure REPL -> Load File to REPL
+
     In the dispatch REPL type:
+
+    (ns zombunity.build) [Enter]
 
     (build-home) [Enter]
 
