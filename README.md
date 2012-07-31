@@ -90,9 +90,11 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
     Make sure you have La Clojure installed
 
-1. Start a REPL for the zombunity_http module
+1. Start a REPL for the <b>zombunity_http</b> module
 
     click on the module, press Ctrl+Shift+F10 or go to Tools -> Start Clojure Console
+
+    Note: it's important to click on the module first so that the appropriate jars are loaded in the REPL classpath
 
 1. Load the http.clj file to the REPL
 
@@ -106,7 +108,7 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
    In the http REPL type (zombunity.http/-main) [Enter]
 
-1. Start a REPL for the zombunity_server module
+1. Start a REPL for the <b>zombunity_server</b> module
 
     click on the module, press Ctrl+Shift+F10 or go to Tools -> Start Clojure Console
 
@@ -132,7 +134,7 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
     (start-processing-messages) [Enter]
 
-1. Start a REPL for the zombunity_web module
+1. Start a REPL for the <b>zombunity_web</b> module
 
     click on the module, press Ctrl+Shift+F10 or go to Tools -> Start Clojure Console
 
