@@ -104,7 +104,7 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
 1. Run the HTTP server
 
-   In the http REPL type (zombunity.http/-main) <Enter>
+   In the http REPL type (zombunity.http/-main) [Enter]
 
 1. Start a REPL for the zombunity_server module
 
@@ -122,15 +122,15 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
     In the dispatch REPL type:
 
-    (ns zombunity.dispatch)
+    (ns zombunity.dispatch) [Enter]
 
-    (register-daemons)
+    (register-daemons) [Enter]
 
 1. Run the server
 
     In the dispatch REPL type:
 
-    (start-processing-messages)
+    (start-processing-messages) [Enter]
 
 1. Start a REPL for the zombunity_web module
 
@@ -144,7 +144,7 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
     In the dispatch REPL type:
 
-    (build-home)
+    (build-home) [Enter]
 
 1. Open the web page:
 
