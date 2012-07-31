@@ -56,7 +56,9 @@
   [conn-id login password num-logins]
   (if-let [user-id (get-user-id login password)]
     (login-succeeded conn-id user-id)
-    (login-prompt conn-id num-logins)))
+    (if (< num-logins max-attempts)
+      (login-prompt conn-id num-logins)
+      (max-login-attempts conn-id))))
 
 (defn get-login-state
   [conn-id]
@@ -67,8 +69,6 @@
   (println "Processing login message for conn " conn-id " with text " text)
   (if-let [{:keys [login, num_logins, password, num_passwords]} (get-login-state conn-id)]
     (cond
-      (= num_passwords max-attempts)
-        (max-login-attempts conn-id)
       (< num_passwords num_logins)
         (do
           (store-login conn-id text)

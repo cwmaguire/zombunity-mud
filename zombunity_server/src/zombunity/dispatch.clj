@@ -6,11 +6,11 @@
             [clojure.string :as str]
             [clojure.tools.namespace :as tools-ns]))
 
-(def conns (atom {}))
+(def conn-users (atom {}))
 
 (defn register-user-conn
   [{:keys [conn-id user-id]}]
-  (swap! conns assoc conn-id user-id))
+  (swap! conn-users assoc conn-id user-id))
 
 (def timer (atom nil))
 (def daemon-fns (atom {:client #{db/msg-client}
@@ -26,7 +26,8 @@
 (defn dispatch
   "dispatch events for logged in users with the user-id or dispatch to the login daemon-fns"
   [{:keys [conn-id type user-id] :as m}]
-  (let [regd-user-id (@conns conn-id user-id)]
+  (println "Got message: " m)
+  (let [regd-user-id (@conn-users conn-id user-id)]
     (if (and
           (nil? regd-user-id)
           (not (#{:client :login-max-attempts :user-logged-in} (keyword type))))
