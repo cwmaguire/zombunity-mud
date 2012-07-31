@@ -67,48 +67,93 @@ Getting Started:
 This is a stop-gap section until I can get a video tutorial done to explain how to get started:
 
 1. Clone the git repo
+
     The jars are included, no need to worry about dependencies at this point.
+
 1. Start the HSQLDB server with an in-memory database called "zombunity"
+
     %HSQLDB_PATH%\lib>java -cp hsqldb.jar org.hsqldb.server.Server --database.0 zombunity --dbname.0 zombunity
+
     Be sure to set the db.name
+
 1. Run the setup SQL with SqlTool:
+
     %HSQLDB_PATH%\lib>java -jar sqltool.jar --rcFile=%ZOMBUNITY_PROJ_PATH%/zombunity_server/db/sqltool.rc zombunity %ZOMBUNITY_PROJ_PATH%\zombunity_server\db\zombunity.sql
+
     e.g. D:\dev\hsqldb\lib>java -jar sqltool.jar --rcFile=d:/dev_zombunity/zombunity/zombunity_server/db/sqltool.rc zombunity d:\dev_zombunity\zombunity\zombunity_server\db\zombunity.sql
+
     Note the slashes: fwd for .rc, backward for .sql
+
 1. Open the project in IDEA
+
     (I'm using IDEA 11.1.3)
+
     Make sure you have La Clojure installed
+
 1. Start a REPL for the zombunity_http module
+
     click on the module, press Ctrl+Shift+F10 or go to Tools -> Start Clojure Console
+
 1. Load the http.clj file to the REPL
+
     Open the file
+
     Put the cursor inside the file
+
     Press Ctrl+Shift+L or go to Tools -> Clojure REPL -> Load File to REPL
+
 1. Run the HTTP server
+
    In the http REPL type (zombunity.http/-main) <Enter>
+
 1. Start a REPL for the zombunity_server module
+
     click on the module, press Ctrl+Shift+F10 or go to Tools -> Start Clojure Console
+
 1. Load the dispatch.clj file to the REPL
+
     Open the file
+
     Put the cursor inside the file
+
     Press Ctrl+Shift+L or go to Tools -> Clojure REPL -> Load File to REPL
+
 1. Register the daemons
+
     In the dispatch REPL type:
+
     (ns zombunity.dispatch)
+
     (register-daemons)
+
 1. Run the server
+
     In the dispatch REPL type:
+
     (start-processing-messages)
+
 1. Start a REPL for the zombunity_web module
+
     click on the module, press Ctrl+Shift+F10 or go to Tools -> Start Clojure Console
+
 1. Compile the ClojureScript to JavaScript
+
     Open the build.clj file
+
     Put the cursor inside the file
+
     In the dispatch REPL type:
+
     (build-home)
+
 1. Open the web page:
+
     Open a web browser
+
     Tested with Chrome, should work with Firefox, probably won't work with IE or Opera
+
     Browse to the zombunity.html file
+
     e.g. file:///D:/dev_zombunity/zombunity/zombunity_web/src/public/zombunity.html
+
 1. Click "Connect"
