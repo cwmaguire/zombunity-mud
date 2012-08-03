@@ -9,6 +9,7 @@ Scroll to the bottom for "Getting Started"
 
 YouTube Code Tutorials:
 -----------------------
+[Getting Started] (http://www.youtube.com/watch?v=UNd3UT4OShs&feature=youtu.be) <br>
 [Login Handling] (http://www.youtube.com/watch?v=gEbyLqxB1C0&feature=youtu.be "Login Handling") <br>
 [JDBC Gotchas] (http://www.youtube.com/watch?v=bbScWWj_sPU "JDBC Gotchas") <br>
 [Registering Daemons] (http://www.youtube.com/watch?v=HzMQ8c3PWiE "Registering Daemons") <br>
@@ -69,6 +70,10 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 1. Clone the git repo
 
     The jars are included, no need to worry about dependencies at this point.
+
+1. Download Hyper SQL Database
+
+    [HSQLDB] (http://hsqldb.org)
 
 1. Start the HSQLDB server with an in-memory database called "zombunity"
 
