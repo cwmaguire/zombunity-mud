@@ -75,6 +75,10 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
     [HSQLDB] (http://hsqldb.org)
 
+    Unzip into a directory
+
+    Familiarize yourself with the lib directory where the HSQLDB.jar and SqlTool.jar files are.
+
 1. Start the HSQLDB server with an in-memory database called "zombunity"
 
     %HSQLDB_PATH%\lib>java -cp hsqldb.jar org.hsqldb.server.Server --database.0 zombunity --dbname.0 zombunity
