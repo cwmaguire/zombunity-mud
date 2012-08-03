@@ -81,7 +81,9 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
 1. Start the HSQLDB server with an in-memory database called "zombunity"
 
-    %HSQLDB_PATH%\lib>java -cp hsqldb.jar org.hsqldb.server.Server --database.0 zombunity --dbname.0 zombunity
+    %HSQLDB_PATH%\lib>java -cp hsqldb.jar org.hsqldb.server.Server --database.0 mem:zombunity --dbname.0 zombunity
+
+    If you'd like the DB persisted to disk use --database.0 zombunity, or --database.0 file:zombunity instead of --database.0 mem:zombunity
 
     Be sure to set the db.name
 
@@ -153,9 +155,13 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
     Put the cursor inside the file
 
+    <b>Wait!</b> Change the src, output-dir and output-to paths to point to your project
+
     Press Ctrl+Shift+L or go to Tools -> Clojure REPL -> Load File to REPL
 
-    In the dispatch REPL type:
+    This will build the JavaScript.
+
+    If you need to recompile the JavaScript switch to the zombunity namespace and run (build-home):
 
     (ns zombunity.build) [Enter]
 
