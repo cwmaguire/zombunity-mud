@@ -5,7 +5,7 @@ Zombunity MUD
 
 An event-driven web MUD framework consisting of a MUD server, http server and web client.
 
-Scroll to the bottom for "Getting Started"
+Scroll to the bottom for a text version of "Getting Started"
 
 YouTube Code Tutorials:
 -----------------------
