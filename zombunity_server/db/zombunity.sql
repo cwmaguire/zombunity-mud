@@ -2,8 +2,6 @@ create memory table msg_to_client
 (id integer generated always as identity (start with 1) primary key,
 json varchar(500) not null);
 
---insert into msg_to_client values (DEFAULT, '{"blah":1}');
-
 create memory table msg_to_server
 (id integer generated always as identity (start with 1) primary key,
 json varchar(500) not null);
@@ -16,8 +14,10 @@ num_passwords tinyint);
 
 create memory table users
 (id integer generated always as identity (start with 1) primary key,
-login varchar(100) not null
-password varchar(100) not null
-unique (login))
+login varchar(100) not null,
+password varchar(100) not null,
+unique (login));
+
+insert into users (login, password) values ('a','b');
 
 commit;
