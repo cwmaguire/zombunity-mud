@@ -6,18 +6,26 @@
             [clojure.string :as str]
             [clojure.tools.namespace :as tools-ns]))
 
+(declare dispatch)
+
 (def conn-users (atom {}))
 
 (defn register-user-conn
   [{:keys [conn-id user-id]}]
   (swap! conn-users assoc conn-id user-id))
 
+(defn msg-all-clients
+  [{:keys [message]}]
+  (doall (map #(dispatch {:type :client :message message :conn-id %}) (keys @conn-users))))
+
 (def timer (atom nil))
-(def daemon-fns (atom {:client #{db/msg-client}
-                       :user-logged-in #{register-user-conn}}))
 (def process-fn-name "process-msg")
 (def reg-dispatch-fn-name "register-dispatch-fn")
 (def msg-type-var-name "msg-types")
+
+(def daemon-fns (atom {:client #{db/msg-client}
+                       :all-clients #{msg-all-clients}
+                       :user-logged-in #{register-user-conn}}))
 
 (defn cmd-not-recognized
   [m]
@@ -30,7 +38,7 @@
   (let [regd-user-id (@conn-users conn-id user-id)]
     (if (and
           (nil? regd-user-id)
-          (not (#{:client :login-max-attempts :user-logged-in} (keyword type))))
+          (not (#{:client :login-max-attempts :user-logged-in :all-clients} (keyword type))))
       (doall (map #(% m) (@daemon-fns :login)))
       (doall (map #(% (assoc m :user-id regd-user-id)) (get @daemon-fns (keyword type) [cmd-not-recognized]))))))
 
@@ -61,7 +69,7 @@
 
   (println "Registering dameon: " daemon-ns)
 
-  (require [daemon-ns])
+  (require [daemon-ns] :reload)
 
   (if-let [msg-types (get-ns-value daemon-ns msg-type-var-name)]
     (doall (map (partial register-daemon-msg-type-fn (get-ns-value daemon-ns process-fn-name)) msg-types))

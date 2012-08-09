@@ -48,7 +48,7 @@
 
 (defn get-user-id
   [login password]
-  (-> (db/select ["select id from users where login = ? and password = ?" login password])
+  (-> (db/select ["select id from user where login = ? and password = ?" login password])
     first
     (get :id)))
 

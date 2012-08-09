@@ -31,7 +31,8 @@
 (defn send-to-connection
   [id message]
   (println "HTTP sending [" message "] to client connection " id)
-  (.send (get @id-conns id) message))
+  (if-let [conn (get @id-conns id)]
+    (.send conn message)))
 
 (defn proc-msgs-from-server
   []
@@ -45,7 +46,7 @@
     (.schedule (new Timer true) task (long 0) (long 2000))))
 
 (defn -main []
-  (doto (WebServers/createWebServer 8080)
+  (doto (WebServers/createWebServer 80)
     (.add "/websocket"
       (proxy [WebSocketHandler] []
         (onOpen [c]
@@ -61,7 +62,8 @@
             (swap! id-conns dissoc conn-id)))
         (onMessage [c j] (proc-msg-from-client c j))))
 
-    (.add (StaticFileHandler. "."))
-    (.start))
+    (.add (StaticFileHandler. "d:/dev_zombunity/zombunity/zombunity_web/src/public/"))
+    (.start)
+    (->> (.getUri) (println "Started webserver on ")))
   (start-processing-messages))
 
