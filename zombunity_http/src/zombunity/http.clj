@@ -6,6 +6,8 @@
             [clojure.data.json :as json])
 )
 
+(def webserver (atom nil))
+(def executorSvc (atom nil))
 (def curr-conn-id (atom 0))
 
 ; map IDs to connections
@@ -46,24 +48,50 @@
     (.schedule (new Timer true) task (long 0) (long 2000))))
 
 (defn -main []
-  (doto (WebServers/createWebServer 80)
-    (.add "/websocket"
-      (proxy [WebSocketHandler] []
-        (onOpen [c]
-          (println "opened" c)
-          (let [conn-id (swap! curr-conn-id inc)]
-              (swap! id-conns assoc conn-id c)
-              (swap! conn-ids assoc c conn-id)
-              (db/msg-server (json/json-str {:type "login" :conn-id conn-id}))))
-        (onClose [c]
-          (println "closed" c)
-          (let [conn-id (get @conn-ids c)]
-            (swap! conn-ids dissoc c)
-            (swap! id-conns dissoc conn-id)))
-        (onMessage [c j] (proc-msg-from-client c j))))
+  (let [executorSvc_ (java.util.concurrent.Executors/newSingleThreadScheduledExecutor)
+        address (java.net.InetAddress/getLocalHost)
+        socket (java.net.InetSocketAddress. address 80)
+        uri (java.net.URI. (str "http://" (.getHostAddress address) "/"))
+        webbitServer (doto (WebServers/createWebServer executorSvc_ socket uri)
+                        (.add "/websocket"
+                          (proxy [WebSocketHandler] []
+                            (onOpen [c]
+                              (println "opened" c)
+                              (let [conn-id (swap! curr-conn-id inc)]
+                                  (swap! id-conns assoc conn-id c)
+                                  (swap! conn-ids assoc c conn-id)
+                                  (db/msg-server (json/json-str {:type "login" :conn-id conn-id}))))
+                            (onClose [c]
+                              (println "closed" c)
+                              (let [conn-id (get @conn-ids c)]
+                                (swap! conn-ids dissoc c)
+                                (swap! id-conns dissoc conn-id)))
+                            (onMessage [c j] (proc-msg-from-client c j))))
 
-    (.add (StaticFileHandler. "d:/dev_zombunity/zombunity/zombunity_web/src/public/"))
-    (.start)
-    (->> (.getUri) (println "Started webserver on ")))
+                        (.add (StaticFileHandler. "d:/dev_zombunity/zombunity/zombunity_web/src/public/"))
+                        (.maxContentLength 520288)
+                        (.maxChunkSize 65536)
+                        (.maxHeaderSize 65536)
+                        (.start)
+                        (->> (.getUri) (println "Started webserver on ")))]
+    (reset! webserver webbitServer)
+    (reset! executorSvc executorSvc_))
   (start-processing-messages))
+
+(defn stopExecutorSvc []
+  (.shutdown @executorSvc)
+  (try
+    (if (not (.awaitTermination @executorSvc 5 java.util.concurrent.TimeUnit/SECONDS))
+      (do
+        (.shutdownNow @executorSvc)
+        (if (not (.awaitTermination @executorSvc 5 java.util.concurrent.TimeUnit/SECONDS))
+          (println "ERROR: executor service did not terminate"))))
+    (catch InterruptedException ie
+      (do
+        (.shutdownNow @executorSvc)
+        (.interrupt (Thread/currentThread))))))
+
+(defn stop []
+  (.stop @webserver)
+  (stopExecutorSvc))
 
