@@ -1,12 +1,10 @@
 (ns zombunity.build
   (:require [cljs.closure :as cljsc]))
 
-(defn build-home []
+(defn build []
   (cljsc/build
-  "d:/dev_zombunity/zombunity/zombunity_web/src/"
+  "zombunity_web/src/" ; relative to top level of lein project
   {;:optimizations :advanced
    ;:optimizations :simple
-   :output-dir "D:/dev_zombunity/zombunity/zombunity_server/src/zombunity/public"
-   :output-to "D:/dev_zombunity/zombunity/zombunity_server/src/zombunity/public/zombunity.js"}))
-
-(build-home)
+   :output-dir "zombunity_server/src/public"
+   :output-to "zombunity_server/src/public/zombunity.js"}))

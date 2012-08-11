@@ -60,7 +60,7 @@
                                 (swap! id-conns dissoc conn-id)))
                             (onMessage [c j] (dispatch c j))))
 
-                        (.add (StaticFileHandler. "d:/dev_zombunity/zombunity/zombunity_server/src/zombunity/public/"))
+                        (.add (StaticFileHandler. "zombunity_server/src/public/"))
                         (.maxContentLength 520288)
                         (.maxChunkSize 65536)
                         (.maxHeaderSize 65536)
