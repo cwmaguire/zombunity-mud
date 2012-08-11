@@ -1,5 +1,5 @@
 (ns zombunity.daemon.chat
-  (:require [zombunity.db :as db]))
+  (:require [zombunity.data :as data]))
 
 (def msg-types [:chat])
 
@@ -12,11 +12,22 @@
   [dispatch-fn]
   (reset! *dispatch-fn* dispatch-fn))
 
+(defn store-chat-msg
+  ([msg]
+    (store-chat-msg msg data/chat))
+  ([msg chat-ref]
+    (let [id (data/next-chat-id)]
+      (dosync
+        (alter chat-ref assoc id msg))
+      id)))
 
 (defn process-msg
-  [{:keys [args]}]
-  (apply println "Chat: " args)
-  (if-let [text (first args)]
-      (let [{:keys [id]} (db/insert "chat_msg" {:msg text})]
-        (@*dispatch-fn* {:type :all-clients :message (str ":type :chat :id " id " :text " text)})))
-  nil)
+  ([{:keys [args]}]
+    (process-msg args @*dispatch-fn*))
+
+  ([args dispatch]
+    (apply println "Chat: " args)
+    (if-let [text (first args)]
+      (let [id (store-chat-msg text)]
+        (dispatch {:type :all-clients :message (str ":type :chat :id " id " :text " text)})))
+    nil))

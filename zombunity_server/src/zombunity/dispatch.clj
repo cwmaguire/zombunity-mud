@@ -1,52 +1,71 @@
 (ns zombunity.dispatch
   (:import [java.util TimerTask Timer]
            [java.io File])
-  (:require [zombunity.db :as db]
-            [clojure.data.json :as json]
+  (:require [clojure.data.json :as json]
             [clojure.string :as str]
-            [clojure.tools.namespace :as tools-ns]))
+            [clojure.tools.namespace :as tools-ns]
+            [zombunity.data :as data]))
 
 (declare dispatch)
-
-(def conn-users (atom {}))
-
-(defn register-user-conn
-  [{:keys [conn-id user-id]}]
-  (swap! conn-users assoc conn-id user-id))
-
-(defn msg-all-clients
-  [{:keys [message]}]
-  (doall (map #(dispatch {:type :client :message message :conn-id %}) (keys @conn-users))))
 
 (def timer (atom nil))
 (def process-fn-name "process-msg")
 (def reg-dispatch-fn-name "register-dispatch-fn")
 (def msg-type-var-name "msg-types")
 
-(def daemon-fns (atom {:client #{db/msg-client}
+(defn register-user-conn
+  [{:keys [conn-id user-id]}]
+  (dosync
+    (alter data/conn-users assoc conn-id user-id)))
+
+(defn msg-client
+  "Stores a message map as a value in the client-msgs map ref with a unique key;
+   if the client message map ref and msg-id ref are not supplied then
+   data/client-msgs and data/msg-id are used. This allows for testing without
+   relying on an existing ref."
+  ([m]
+    (msg-client m data/client-msgs data/msg-id))
+
+  ([m client-msgs-ref msg-id-ref]
+    (dosync
+      (alter client-msgs-ref assoc (swap! msg-id-ref inc) m))))
+
+(defn msg-all-clients
+  "Creates and stores a message map for each connected user
+  in the client message ref using the next id from the msg-id ref;
+  if the client-msgs, conn-users and msg-id refs are not supplied
+  then data/client-msgs, data/conn-users and data/msg-id are used"
+  ([m]
+     (msg-all-clients m data/client-msgs data/conn-users data/msg-id))
+
+  ([{:keys [message]} client-msgs-ref conn-users-ref msg-id-ref]
+    (dosync
+      (doall
+        (map (partial alter client-msgs-ref assoc)
+          (repeatedly #(swap! msg-id-ref inc))
+          (map assoc
+            (repeat {:message message})
+            (repeat :client-id)
+            (keys conn-users-ref)))))))
+
+(def daemon-fns (atom {:client #{msg-client}
                        :all-clients #{msg-all-clients}
                        :user-logged-in #{register-user-conn}}))
 
 (defn cmd-not-recognized
   [m]
-  (db/msg-client (assoc m :message (str "Command not recognized: " (m :type)))))
+  (msg-client (assoc m :message (str "Command not recognized: " (m :type)))))
 
 (defn dispatch
   "dispatch events for logged in users with the user-id or dispatch to the login daemon-fns"
   [{:keys [conn-id type user-id] :as m}]
   (println "Got message: " m)
-  (let [regd-user-id (@conn-users conn-id user-id)]
+  (let [regd-user-id (@data/conn-users conn-id user-id)]
     (if (and
           (nil? regd-user-id)
           (not (#{:client :login-max-attempts :user-logged-in :all-clients} (keyword type))))
       (doall (map #(% m) (@daemon-fns :login)))
       (doall (map #(% (assoc m :user-id regd-user-id)) (get @daemon-fns (keyword type) [cmd-not-recognized]))))))
-
-(defn process-messages
-  "Grabs messages form the database and dispatches them to the appropriate daemon"
-  []
-  (doall (map dispatch (db/get-messages))))
-
 
 (defn find-daemons
   []
@@ -60,7 +79,8 @@
 (defn get-ns-value
   "Get a value from a var in a namespace using the namespace and a string containing the name of the var"
   [ns var-name]
-  (var-get (ns-resolve ns (symbol var-name))))
+  (if-let [var_ (ns-resolve ns (symbol var-name))]
+    (var-get var_)))
 
 (defn register-daemon
   "registers the daemon in the daemon function map, registers
@@ -84,10 +104,3 @@
   []
   (doall (map register-daemon (find-daemons)))
   nil)
-
-
-(defn start-processing-messages
-  []
-  (let [task (proxy [TimerTask] []
-    (run [] (process-messages)))]
-    (.schedule (reset! timer (new Timer true)) task (long 0) (long 2000))))

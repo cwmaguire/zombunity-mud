@@ -1,5 +1,5 @@
 (ns zombunity.daemon.move
-  (:require [zombunity.db :as db]))
+  (:require [zombunity.data :as data]))
 
 (def msg-types [:n :s :e :w :u :d ])
 
