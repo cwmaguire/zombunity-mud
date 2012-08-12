@@ -7,4 +7,10 @@
   (is
     (=
       {:type "login-max-attempts" :conn-id 1}
-      (login/max-login-attempts identity 1))))
+      (login/max-login-attempts 1 identity))))
+
+(deftest test-get-user-id
+  (is
+    (=
+      1
+      (login/get-user-id "a" "b" (ref [{:id 1 :login "a" :password "b"}])))))

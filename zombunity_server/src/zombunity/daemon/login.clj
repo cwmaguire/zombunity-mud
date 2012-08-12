@@ -19,10 +19,10 @@
   ([conn-id f] (f {:type "login-max-attempts" :conn-id conn-id})))
 
 (defn prompt
-  ([conn-id prompt]
-    (prompt conn-id prompt @*dispatch-fn*))
-  ([conn-id prompt f]
-    (f {:type "client" :conn-id conn-id :message prompt})))
+  ([conn-id text]
+    (prompt conn-id text @*dispatch-fn*))
+  ([conn-id text f]
+    (f {:type "client" :conn-id conn-id :message text})))
 
 (defn first-login-prompt
   ([conn-id]
@@ -35,33 +35,34 @@
 (defn login-prompt
   ([conn-id curr-logins]
     (login-prompt conn-id curr-logins data/login-state))
+
   ([conn-id curr-logins login-state]
     (dosync
-      (alter @data/login-state assoc-in [conn-id :num_logins] (inc (get-in @data/login-state [conn-id :num-logins]))))
+      (alter login-state assoc-in [conn-id :num_logins] (inc (get-in @login-state [conn-id :num-logins] 0))))
     ;(@*dispatch-fn* {:type :login-state :conn-id conn-id :num_logins (inc curr-logins)})
     (prompt conn-id "enter login:")))
 
 (defn password-prompt
   ([conn-id curr-passwords]
     (password-prompt conn-id curr-passwords data/login-state))
+
   ([conn-id curr-passwords login-state]
     (dosync
-      (alter @data/login-state assoc-in [conn-id :num_passwords] (inc (get-in @data/login-state [conn-id :num-passwords]))))
-      ;(@*dispatch-fn* {:type :login-state :conn-id conn-id: :num_passwords (inc curr-passwords)})
+      (alter login-state assoc-in [conn-id :num_passwords] (inc (get-in @login-state [conn-id :num-passwords] 0))))
     (prompt conn-id "enter password:")))
 
 (defn store-login
   ([conn-id login]
     (store-login conn-id login data/login-state))
+
   ([conn-id login login-state]
     (dosync
-      (alter @data/login-state assoc-in [conn-id :login] login))
-      ;(@*dispatch-fn* {:type :login-state :conn-id conn-id :login login})
-      ))
+      (alter login-state assoc-in [conn-id :login] login))))
 
 (defn login-succeeded
   ([conn-id user-id]
     (login-succeeded conn-id user-id @*dispatch-fn*))
+
   ([conn-id user-id f]
     (prompt conn-id "login successful")
     (f {:type :user-logged-in :conn-id conn-id :user-id user-id})))
@@ -69,6 +70,7 @@
 (defn get-user-id
   ([log pass]
     (get-user-id log pass data/users))
+
   ([log pass users]
     (-> (filter (fn [{:keys [login password]}] (and (= log login) (= pass password))) @users)
     ;(-> (db/select ["select id from user where login = ? and password = ?" login password])
@@ -88,7 +90,7 @@
     (process-msg conn-id text data/login-state))
 
   ([conn-id text login-state]
-    (println "Processing login message for conn " conn-id " with text " text)
+    (println "LOGIN: Processing login message for conn " conn-id " with text " text)
     (if-let [{:keys [login num_logins password num_passwords]} (get @login-state conn-id)]
       (cond
         (< num_passwords num_logins)

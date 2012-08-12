@@ -1,7 +1,8 @@
 (ns zombunity.websocket
   (:require [goog.net.WebSocket :as ws]
             [zombunity.dispatch :as dispatch]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [goog.dom :as dom]))
 
 (def websocket (atom nil))
 
@@ -29,7 +30,7 @@
     (.addEventListener websocket-temp ws/EventType.MESSAGE on-msg)
     (.addEventListener websocket-temp ws/EventType.OPENED on-open)
     (.addEventListener websocket-temp ws/EventType.CLOSED on-close)
-    (.open websocket-temp "ws://127.0.0.1:8080/websocket")))
+    (.open websocket-temp (str "ws://" (second (re-find #"//(.*)/" (.-URL (dom/getDocument)))) "/websocket"))))
 
 (defn disconnect [_]
   (.close @websocket)

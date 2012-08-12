@@ -25,39 +25,45 @@
   (let [msg (-> (json/read-json json-msg)
                 (assoc :conn-id (get @conn-ids connection)))]
     (dispatch/dispatch msg)
-    (println "HTTP sent server message: " msg)))
+    (println "HTTP: sent server message: " msg)))
 
 (defn send-client-msg
   [{:keys [conn-id message]}]
-  (println "HTTP sending [" message "] to client connection " conn-id)
+  (println "HTTP: sending [" message "] to client connection " conn-id)
   (if-let [conn (get @id-conns conn-id)]
     (.send conn message)))
 
 (defn send-client-msgs
   [_ ref_ _ msgs]
-  (dosync
-    (apply alter ref_ dissoc (keys msgs)))
-  (doall (map send-client-msg (vals msgs))))
+  (if (not (empty? msgs))
+    (do
+      (println "HTTP: sending " (count msgs) " messages")
+      (dosync
+        (apply alter ref_ dissoc (keys msgs)))
+      (doall (map send-client-msg (vals msgs))))
+    (println "HTTP: client msg queue emptied")))
 
-(defn -main []
+(defn -main [port]
+  (println "HTTP: Starting webserver on port: " port)
+
   ; tell dispatch how to send messages back
   (add-watch data/client-msgs nil send-client-msgs)
   (dispatch/register-daemons)
 
-  (let [webbitServer (doto (WebServers/createWebServer 80)
+  (let [webbitServer (doto (WebServers/createWebServer (read-string port))
                         (.add "/websocket"
                           (proxy [WebSocketHandler] []
                             (onOpen [c]
-                              (println "opened" c)
                               (let [conn-id (swap! last-conn-id inc)]
                                   (swap! id-conns assoc conn-id c)
                                   (swap! conn-ids assoc c conn-id)
+                                  (println "HTTP: registered new connection " conn-id "... dispatching to login")
                                   (dispatch/dispatch {:type "login" :conn-id conn-id})))
                             (onClose [c]
-                              (println "closed" c)
                               (let [conn-id (get @conn-ids c)]
                                 (swap! conn-ids dissoc c)
-                                (swap! id-conns dissoc conn-id)))
+                                (swap! id-conns dissoc conn-id)
+                                (println "HTTP: unregistered connection " conn-id)))
                             (onMessage [c j] (dispatch c j))))
 
                         (.add (StaticFileHandler. "zombunity_server/src/public/"))
@@ -65,7 +71,5 @@
                         (.maxChunkSize 65536)
                         (.maxHeaderSize 65536)
                         (.start)
-                        (->> (.getUri) (println "Started webserver on ")))]
-    ;(reset! webserver webbitServer)
-    ))
+                        (->> (.getUri) (println "HTTP: Started webserver on ")))]))
 

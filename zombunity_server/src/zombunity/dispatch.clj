@@ -24,11 +24,15 @@
    data/client-msgs and data/msg-id are used. This allows for testing without
    relying on an existing ref."
   ([m]
+    (println "DISPATCH: Messaging client " (:conn-id m) ", no ref, message = " (:message m))
     (msg-client m data/client-msgs data/msg-id))
 
   ([m client-msgs-ref msg-id-ref]
-    (dosync
-      (alter client-msgs-ref assoc (swap! msg-id-ref inc) m))))
+    (println "DISPATCH: Messaging client " (:conn-id m) " with ref.")
+    (let [msg-id (swap! msg-id-ref inc)]
+      (println "DISPATCH: attempting to alter client-msgs with assoc, " msg-id " and " m)
+      (dosync
+        (alter client-msgs-ref assoc msg-id m)))))
 
 (defn msg-all-clients
   "Creates and stores a message map for each connected user
@@ -45,7 +49,7 @@
           (repeatedly #(swap! msg-id-ref inc))
           (map assoc
             (repeat {:message message})
-            (repeat :client-id)
+            (repeat :conn-id)
             (keys conn-users-ref)))))))
 
 (def daemon-fns (atom {:client #{msg-client}
@@ -59,8 +63,8 @@
 (defn dispatch
   "dispatch events for logged in users with the user-id or dispatch to the login daemon-fns"
   [{:keys [conn-id type user-id] :as m}]
-  (println "Got message: " m)
-  (let [regd-user-id (@data/conn-users conn-id user-id)]
+  (println "DISPATCH: Rec'd message: " m)
+  (let [regd-user-id (get @data/conn-users conn-id user-id)]
     (if (and
           (nil? regd-user-id)
           (not (#{:client :login-max-attempts :user-logged-in :all-clients} (keyword type))))

@@ -1,10 +1,10 @@
 (ns zombunity.data)
 
 
-(def client-msgs (ref []))
+(def client-msgs (ref {}))
 (def msg-id (atom 0))
 (def conn-users (ref {}))
-(def users (ref {"a" "b" "c" "d"}))
+(def users (ref [{:id 1 :login "a" :password "a"}]))
 (def login-state (ref {}))
 (def chat (ref []))
 (def chat-id (atom 0))
