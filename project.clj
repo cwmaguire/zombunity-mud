@@ -1,4 +1,4 @@
-(defproject zombunity-mud "0.1.0-SNAPSHOT"
+(defproject zombunity-mud "0.1.1-SNAPSHOT"
   :description "Web-based mud server with websockets"
   :url "https://github.com/cwmaguire/zombunity-mud"
   :license {:name "Eclipse Public License"

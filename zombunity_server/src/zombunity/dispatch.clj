@@ -50,7 +50,7 @@
           (map assoc
             (repeat {:message message})
             (repeat :conn-id)
-            (keys conn-users-ref)))))))
+            (keys @conn-users-ref)))))))
 
 (def daemon-fns (atom {:client #{msg-client}
                        :all-clients #{msg-all-clients}

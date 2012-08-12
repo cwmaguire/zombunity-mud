@@ -15,6 +15,7 @@
 (defn store-chat-msg
   ([msg]
     (store-chat-msg msg data/chat))
+
   ([msg chat-ref]
     (let [id (data/next-chat-id)]
       (dosync
