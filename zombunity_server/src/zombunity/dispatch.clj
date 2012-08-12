@@ -30,7 +30,7 @@
   ([m client-msgs-ref msg-id-ref]
     (println "DISPATCH: Messaging client " (:conn-id m) " with ref.")
     (let [msg-id (swap! msg-id-ref inc)]
-      (println "DISPATCH: attempting to alter client-msgs with assoc, " msg-id " and " m)
+      ;(println "DISPATCH: altering client-msgs with assoc, " msg-id " and " m)
       (dosync
         (alter client-msgs-ref assoc msg-id m)))))
 

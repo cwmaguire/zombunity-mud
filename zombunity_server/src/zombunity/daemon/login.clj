@@ -72,18 +72,25 @@
     (get-user-id log pass data/users))
 
   ([log pass users]
-    (-> (filter (fn [{:keys [login password]}] (and (= log login) (= pass password))) @users)
-    ;(-> (db/select ["select id from user where login = ? and password = ?" login password])
-      first
-      :id)))
+    (println "LOGIN: " log "/" pass)
+    (let [matching-users (filter (fn [{:keys [login password]}] (and (= log login) (= pass password))) @users)]
+      (println "LOGIN: matched " (count matching-users) " users")
+      (let [first-user (first matching-users)]
+        (println "LOGIN: first matching user: " first-user)
+        (let [id (:id first-user)]
+          id)))))
 
 (defn check-login
   [conn-id login password num-logins]
   (if-let [user-id (get-user-id login password)]
-    (login-succeeded conn-id user-id)
-    (if (< num-logins max-attempts)
-      (login-prompt conn-id num-logins)
-      (max-login-attempts conn-id))))
+    (do
+      (println "LOGIN: login succeeded")
+      (login-succeeded conn-id user-id))
+    (do
+      (println "LOGIN: login failed")
+      (if (< num-logins max-attempts)
+        (login-prompt conn-id num-logins)
+        (max-login-attempts conn-id)))))
 
 (defn process-msg
   ([{:keys [conn-id text]}]
