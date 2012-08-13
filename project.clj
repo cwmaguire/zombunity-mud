@@ -14,5 +14,5 @@
                  [local/cljs "1.0.0"]
                  [local/goog "1.0.0"]
                  [local/compiler "1.0.0"]]
-  :source-paths ["zombunity_server/src" "zombunity_web/src"]
-  :test-paths ["zombunity_server/test"])
+  :source-path "zombunity_server/src"
+  :test-path "zombunity_server/test")
