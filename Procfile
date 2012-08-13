@@ -1,1 +1,1 @@
-web: lein trampoline run $PORT
+web: lein trampoline run -m zombunity.http/-main $PORT
