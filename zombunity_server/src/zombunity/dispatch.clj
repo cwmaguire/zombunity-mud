@@ -91,3 +91,7 @@
   (let [task (proxy [TimerTask] []
     (run [] (process-messages)))]
     (.schedule (reset! timer (new Timer true)) task (long 0) (long 2000))))
+
+(defn main []
+  (register-daemons)
+  (start-processing-messages))
