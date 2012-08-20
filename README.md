@@ -9,6 +9,7 @@ Scroll to the bottom for a text version of "Getting Started"
 
 YouTube Code Tutorials:
 -----------------------
+[Getting Started on Heroku] (http://www.youtube.com/watch?v=44YNnFkVeJA) <br>
 [Getting Started] (http://www.youtube.com/watch?v=UNd3UT4OShs&feature=youtu.be) <br>
 [Login Handling] (http://www.youtube.com/watch?v=gEbyLqxB1C0&feature=youtu.be "Login Handling") <br>
 [JDBC Gotchas] (http://www.youtube.com/watch?v=bbScWWj_sPU "JDBC Gotchas") <br>
