@@ -114,9 +114,10 @@ All scripts assume they are run from you zombunity dev directory (i.e. where you
 
 1. Run the MUD server
 
-> start_mud_repl
-> (ns zombunity.dispatch)
-> (register-daemons)
+> ./start_mud_repl
+
+> (ns zombunity.dispatch) <br>
+> (register-daemons) <br>
 > (start-processing-messages)
 
 ### Windows
