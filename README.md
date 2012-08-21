@@ -95,7 +95,7 @@ All scripts assume they are run from you zombunity dev directory (i.e. where you
 Only perform the necessary steps: e.g. if the database is running and has data, it doesn't need to be run again. 
 You can kill the database with: 
 
-> ps -A | grep java
+> ps -A | grep java <br>
 > kill -9 <process ID from previous step>
 
 If the database goes down, the HTTP and MUD servers should be restarted. 
