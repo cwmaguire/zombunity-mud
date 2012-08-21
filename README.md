@@ -92,27 +92,35 @@ All scripts assume they are run from you zombunity dev directory (i.e. where you
 
 #### Subsequent Runs
 
+Only perform the necessary steps: e.g. if the database is running and has data, it doesn't need to be run again. 
+You can kill the database with: 
+
+> ps -A | grep java
+> kill -9 <process ID from previous step>
+
+If the database goes down, the HTTP and MUD servers should be restarted. 
+
 1. Load dependencies with
 
 > lein deps
 
-1. Start the database
+2. Start the database
 
 > ./start_db
 
-1. Load the database with data 
+3. Load the database with data 
 
 > ./load_data 
 
-1. Build the ClojureScript
+4. Build the ClojureScript
 
 > lein run -m zombunity.build/build
 
-1. Run the HTTP server
+5. Run the HTTP server
 
 > lein run
 
-1. Run the MUD server
+6. Run the MUD server
 
 > ./start_mud_repl
 
