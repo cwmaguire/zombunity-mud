@@ -89,11 +89,7 @@ a MUD server, an HTTP server, a web client and an HSQLDB server.
 
 1. Start the HSQLDB server with an in-memory database called "zombunity"
 
-    %HSQLDB_PATH%\lib>java -cp hsqldb.jar org.hsqldb.server.Server --database.0 mem:zombunity --dbname.0 zombunity
-
-    If you'd like the DB persisted to disk use --database.0 zombunity, or --database.0 file:zombunity instead of --database.0 mem:zombunity
-
-    Be sure to set the db.name
+    %HSQLDB_PATH%\lib>java -cp hsqldb.jar org.hsqldb.server.Server --database.0 file:zombunity --dbname.0 zombunity
 
 1. Run the setup SQL with SqlTool:
 

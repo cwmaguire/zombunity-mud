@@ -46,6 +46,10 @@
     (run [] (proc-msgs-from-server)))]
     (.schedule (new Timer true) task (long 0) (long 2000))))
 
+(defn get-proj-path
+  []
+  (str/replace (. (java.io.File. ".") getCanonicalPath) #"\\" "/"))
+
 (defn -main []
   (let [webbitServer (doto (WebServers/createWebServer 80)
                         (.add "/websocket"
@@ -63,7 +67,7 @@
                                 (swap! id-conns dissoc conn-id)))
                             (onMessage [c j] (proc-msg-from-client c j))))
 
-                        (.add (StaticFileHandler. "d:/dev_zombunity/zombunity/zombunity_http/resource/"))
+                        (.add (StaticFileHandler. (str (get-proj-path) "/resource/")))
                         (.start)
                         (->> (.getUri) (println "Started webserver on ")))]
     (reset! webserver webbitServer))
