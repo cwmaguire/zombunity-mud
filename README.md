@@ -77,11 +77,11 @@ All scripts assume they are run from you zombunity dev directory (i.e. where you
 
 1. ./start
 
-    runs lein deps 
-    Starts the HSQLDB
-    loads it with data
-    builds ClojureScript
-    runs HTTP server
+    runs lein deps <br>
+    Starts the HSQLDB <br>
+    loads it with data <br>
+    builds ClojureScript <br>
+    runs HTTP server <br>
     runs a REPL for running the MUD server
 
 #### Subsequent Runs
