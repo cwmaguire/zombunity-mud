@@ -66,6 +66,55 @@ Walkthrough:
 
 Getting Started:
 ----------------
+
+### GNU/Linux
+
+This has been simplified down to a set of BASH scripts with a single script to kick everything off. 
+
+All scripts assume they are run from you zombunity dev directory (i.e. where your project.clj file is)
+
+#### First Run
+
+1. ./start
+
+    runs lein deps 
+    Starts the HSQLDB
+    loads it with data
+    builds ClojureScript
+    runs HTTP server
+    runs a REPL for running the MUD server
+
+#### Subsequent Runs
+
+1. Load dependencies with
+
+> lein deps
+
+1. Start the database
+
+> ./start_db
+
+1. Load the database with data 
+
+> ./load_data 
+
+1. Build the ClojureScript
+
+> lein run -m zombunity.build/build
+
+1. Run the HTTP server
+
+> lein run
+
+1. Run the MUD server
+
+> start_mud_repl
+> (ns zombunity.dispatch)
+> (register-daemons)
+> (start-processing-messages)
+
+### Windows
+
 I've simplified this by using Leiningen, but only slightly. IDEA is no longer required. Also, I've switched to
 running the MUD on a separate Lucid Puppy GNU/Linux box so all the commands are for GNU/Linux, but nothing
 so onerous that it can't be fairly easily translated to Windows.
