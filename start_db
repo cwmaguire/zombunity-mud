@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo
+echo "---------------------------------------"
+echo "Starting HSQLDB server"
+echo "---------------------------------------"
+echo 
+
+#run the HSQLDB server
+nohup java -cp $(find ~/.m2 -name hsqldb*.jar) org.hsqldb.server.Server --database.0 file:zombunity --dbname.0 zombunity >& ./hsqldb.log &

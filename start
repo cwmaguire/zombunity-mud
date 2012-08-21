@@ -1,0 +1,41 @@
+#!/bin/bash 
+
+echo
+echo "---------------------------------------"
+echo "Running Lein deps"
+echo "---------------------------------------"
+echo 
+
+lein deps
+
+./start_db
+
+./load_data
+
+# will have to do this manually for now
+#./start_mud
+
+echo
+echo "---------------------------------------"
+echo "Compiling ClojureScript to JavaScript"
+echo "---------------------------------------"
+echo 
+
+lein run -m clojure.build/build
+
+echo
+echo "---------------------------------------"
+echo "Running Lein deps"
+echo "---------------------------------------"
+echo 
+
+lein run -m clojure.http
+
+
+echo
+echo "---------------------------------------"
+echo "Start MUD server via start_mud_repl"
+echo "---------------------------------------"
+echo
+
+./start_mud_repl

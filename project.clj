@@ -12,6 +12,7 @@
                  [org.clojure/tools.namespace "0.1.3"]
                  [org.clojure/java.jdbc "0.2.3"]
                  [org.hsqldb/hsqldb "2.2.8"]
+                 [org.hsqldb/sqltool "2.2.8"]
                  [local/clj "1.0.0"]
                  [local/cljs "1.0.0"]
                  [local/goog "1.0.0"]

@@ -3,7 +3,8 @@
            [org.webbitserver.handler StaticFileHandler]
            [java.util TimerTask Timer])
   (:require [zombunity.dbh :as db]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [clojure.string :as s]))
 
 (def webserver (atom nil))
 (def executorSvc (atom nil))
@@ -48,7 +49,7 @@
 
 (defn get-proj-path
   []
-  (str/replace (. (java.io.File. ".") getCanonicalPath) #"\\" "/"))
+  (s/replace (. (java.io.File. ".") getCanonicalPath) #"\\" "/"))
 
 (defn -main []
   (let [webbitServer (doto (WebServers/createWebServer 80)
