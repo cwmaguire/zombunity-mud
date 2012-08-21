@@ -66,11 +66,18 @@ Walkthrough:
 
 Getting Started:
 ----------------
-This is a stop-gap section until I can get a video tutorial done to explain how to get started:
+I've simplified this by using Leiningen, but only slightly. IDEA is no longer required. Also, I've switched to
+running the MUD on a separate Lucid Puppy GNU/Linux box so all the commands are for GNU/Linux, but nothing
+so onerous that it can't be fairly easily translated to Windows.
+
+This is a four component system and I'm slowly working out how to make it a one step, portable process; there's
+a MUD server, an HTTP server, a web client and an HSQLDB server.
 
 1. Clone the git repo
 
     The jars are included, no need to worry about dependencies at this point.
+
+    git clone https://github.com/cwmaguire/zombunity-mud
 
 1. Download Hyper SQL Database
 
@@ -96,77 +103,44 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
     Note the slashes: fwd for .rc, backward for .sql
 
-1. Open the project in IDEA
+1. Run the http server with "lein run"
 
-    (I'm using IDEA 11.1.3)
+    NOTE: you need to change the hard-coded StaticFileHandler path in http.clj (I know, I know, that's terrible. I'll get to it)
 
-    Make sure you have La Clojure installed
+    change to the director where project.clj is
 
-1. Start a REPL for the <b>zombunity_http</b> module
+    open a command prompt / terminal and run "lein run"
 
-    click on the module, press Ctrl+Shift+F10 or go to Tools -> Start Clojure Console
+1. Run a REPL for the MUD server
 
-    Note: it's important to click on the module first so that the appropriate jars are loaded in the REPL classpath
+    I haven't worked out yet (I've had enough to do already) to get Leiningen to leave my server running.
 
-1. Load the http.clj file to the REPL
+    Instead we'll start our own repl.
 
-    Open the file
+    First copy all the .jar files from the local maven repo to a directory so we can set up the classpath easier:
 
-    Put the cursor inside the file
+    cd ~/.m2/repository
+    find -name *.jar | xargs -i cp {} ~/my_temp_lib_dir
 
-    Press Ctrl+Shift+L or go to Tools -> Clojure REPL -> Load File to REPL
+    Next run the REPL through the clojure jar:
 
-1. Run the HTTP server
+    java -cp ~/my_temp_lib_dir/clojure-1.4.0.jar:~/my_temp_lib_dir:<path to zombunity_server/src> clojure.main
 
-   In the http REPL type (zombunity.http/-main) [Enter]
+    Run the main function:
 
-1. Start a REPL for the <b>zombunity_server</b> module
+    (main)
 
-    click on the module, press Ctrl+Shift+F10 or go to Tools -> Start Clojure Console
+1. Build the JavaScript
 
-1. Load the dispatch.clj file to the REPL
+    NOTE: You have to change the source and destination paths in build.clj (I know, I fix, I fix!)
 
-    Open the file
+    Open a command prompt / terminal
 
-    Put the cursor inside the file
+    Change directory to the root of the project (where project.clj is)
 
-    Press Ctrl+Shift+L or go to Tools -> Clojure REPL -> Load File to REPL
+    Run the build process:
 
-1. Register the daemons
-
-    In the dispatch REPL type:
-
-    (ns zombunity.dispatch) [Enter]
-
-    (register-daemons) [Enter]
-
-1. Run the server
-
-    In the dispatch REPL type:
-
-    (start-processing-messages) [Enter]
-
-1. Start a REPL for the <b>zombunity_web</b> module
-
-    click on the module, press Ctrl+Shift+F10 or go to Tools -> Start Clojure Console
-
-1. Compile the ClojureScript to JavaScript
-
-    Open the build.clj file
-
-    Put the cursor inside the file
-
-    <b>Wait!</b> Change the src, output-dir and output-to paths to point to your project
-
-    Press Ctrl+Shift+L or go to Tools -> Clojure REPL -> Load File to REPL
-
-    This will build the JavaScript.
-
-    If you need to recompile the JavaScript switch to the zombunity namespace and run (build-home):
-
-    (ns zombunity.build) [Enter]
-
-    (build-home) [Enter]
+    lein run -m zombunity.web/build
 
 1. Open the web page:
 
@@ -176,6 +150,6 @@ This is a stop-gap section until I can get a video tutorial done to explain how 
 
     Browse to the zombunity.html file
 
-    e.g. file:///D:/dev_zombunity/zombunity/zombunity_web/src/public/zombunity.html
+    e.g. http://localhost/zombunity.html
 
 1. Click "Connect"
