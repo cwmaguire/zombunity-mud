@@ -3,7 +3,6 @@
            [java.io File])
   (:require [zombunity.db :as db]
             [clojure.data.json :as json]
-            [clojure.string :as str]
             [clojure.tools.namespace :as tools-ns]))
 
 (declare dispatch)
@@ -92,6 +91,6 @@
     (run [] (process-messages)))]
     (.schedule (reset! timer (new Timer true)) task (long 0) (long 2000))))
 
-(defn main []
+(defn -main []
   (register-daemons)
   (start-processing-messages))
