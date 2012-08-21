@@ -84,6 +84,12 @@ All scripts assume they are run from you zombunity dev directory (i.e. where you
     runs HTTP server <br>
     runs a REPL for running the MUD server
 
+1. Run the MUD server in the resulting REPL
+
+> (ns zombunity.dispatch)
+> (register-daemons)
+> (start-processing-messages)
+
 #### Subsequent Runs
 
 1. Load dependencies with
