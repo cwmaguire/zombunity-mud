@@ -67,7 +67,7 @@
                                 (swap! conn-ids dissoc c)
                                 (swap! id-conns dissoc conn-id)))
                             (onMessage [c j] (proc-msg-from-client c j))))
-
+                        (println "Creating static file handler for " (str (get-proj-path) "/resource/"))
                         (.add (StaticFileHandler. (str (get-proj-path) "/resource/")))
                         (.start)
                         (->> (.getUri) (println "Started webserver on ")))]
