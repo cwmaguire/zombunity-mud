@@ -96,7 +96,7 @@ Only perform the necessary steps: e.g. if the database is running and has data, 
 You can kill the database with: 
 
 > ps -A | grep java <br>
-> kill -9 <process ID from previous step>
+> kill -9 [process ID from previous step]
 
 If the database goes down, the HTTP and MUD servers should be restarted. 
 
