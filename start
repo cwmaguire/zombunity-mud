@@ -1,10 +1,10 @@
 #!/bin/bash 
 
-echo
-echo "---------------------------------------"
-echo "Running Lein deps"
-echo "---------------------------------------"
-echo 
+custom_echo(){
+  echo -e "$2=== $1 ===";
+}
+
+custom_echo "Running Lein deps"
 
 lein deps
 
@@ -15,27 +15,14 @@ lein deps
 # will have to do this manually for now
 #./start_mud
 
-echo
-echo "---------------------------------------"
-echo "Compiling ClojureScript to JavaScript"
-echo "---------------------------------------"
-echo 
+custom_echo "Compiling ClojureScript to JavaScript"
 
-lein run -m clojure.build/build
+lein run -m zombunity.build/build
 
-echo
-echo "---------------------------------------"
-echo "Running Lein deps"
-echo "---------------------------------------"
-echo 
+custom_echo "Running Lein deps" "\n"
 
-lein run -m clojure.http
+nohup lein run -m zombunity.http >& ./http.log &
 
-
-echo
-echo "---------------------------------------"
-echo "Start MUD server via start_mud_repl"
-echo "---------------------------------------"
-echo
+custom_echo "Start MUD server via start_mud_repl"
 
 ./start_mud_repl

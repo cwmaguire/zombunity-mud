@@ -1,25 +1,23 @@
 #!/bin/bash 
 
+custom_echo(){
+  echo "=== $1 ===";
+}
+
 TEMP_JAR_DIR=temp_hsqldb_jar
 
-echo "---------------------------------------"
-echo "Copying HSQLDB and Sqltool jars to temp lib"
-echo "---------------------------------------"
+custom_echo "Copying HSQLDB and Sqltool jars to temp lib"
 
 mkdir $TEMP_JAR_DIR
 
 find ~/.m2 -name hsqldb*.jar -or -name sqltool*.jar | xargs cp -t ./$TEMP_JAR_DIR
 
 
-echo "---------------------------------------"
-echo "Loading data"
-echo "---------------------------------------"
+custom_echo "Loading data"
 
 #insert our data
 java -jar $(find ./$TEMP_JAR_DIR -name "sqltool*.jar") --rcFile=$(find . -name "sqltool.rc") zombunity $(find . -name "zombunity.sql")
 
-echo "---------------------------------------"
-echo "Cleaning up"
-echo "---------------------------------------"
+custom_echo "Cleaning up"
 
 rm -r $TEMP_JAR_DIR

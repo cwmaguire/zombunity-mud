@@ -52,7 +52,7 @@
   (s/replace (. (java.io.File. ".") getCanonicalPath) #"\\" "/"))
 
 (defn -main []
-  (let [webbitServer (doto (WebServers/createWebServer 80)
+  (let [webbitServer (doto (WebServers/createWebServer 8080)
                         (.add "/websocket"
                           (proxy [WebSocketHandler] []
                             (onOpen [c]

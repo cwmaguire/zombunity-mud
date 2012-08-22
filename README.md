@@ -98,6 +98,10 @@ You can kill the database with:
 > ps -A | grep java <br>
 > kill -9 [process ID from previous step]
 
+To remove all the database files and start fresh: 
+
+> rm -r zombunity.*
+
 If the database goes down, the HTTP and MUD servers should be restarted. 
 
 1. Load dependencies with

@@ -1,18 +1,19 @@
 #!/bin/bash 
 
-echo
-echo "---------------------------------------"
-echo "Starting MUD server REPL"
-echo "---------------------------------------"
-echo 
+custom_echo(){
+  echo "=== $1 ===";
+}
 
-SERVER_SRC=$(find . -path "*zombunity_server/src")
+custom_echo "Starting MUD server REPL"
 
-CLOJURE_JAR=$(find ~/.m2 -name clojure*.jar | sort -r | head -n 1)
+SERVER_SRC=$(find $(pwd) -path "*zombunity_server/src")
 
-REPO_CLASSPATH="$CLOJURE_JAR:$( find ~/.m2 -name *.jar ! -name clojure* | tr -s "\f\n" ":" ):$SERVER_SRC"
+CLOJURE_JAR=$(find ~/.m2 -name clojure-1*.jar | sort -r | head -n 1)
+
+REPO_CLASSPATH="$CLOJURE_JAR:$SERVER_SRC:$( find ~/.m2 -name *.jar ! -name clojure* | tr -s "\f\n" ":" )"
+#REPO_CLASSPATH="$CLOJURE_JAR:$SERVER_SRC"
 
 # DEBUG
 #echo $REPO_CLASSPATH
 
-java -cp $REPO_CLASSPATH clojure.main
+java -cp $REPO_CLASSPATH clojure.main -i $SERVER_SRC/zombunity/dispatch.clj -r
