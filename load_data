@@ -18,6 +18,6 @@ custom_echo "Loading data"
 #insert our data
 java -jar $(find ./$TEMP_JAR_DIR -name "sqltool*.jar") --rcFile=$(find . -name "sqltool.rc") zombunity $(find . -name "zombunity.sql")
 
-custom_echo "Cleaning up"
+custom_echo "Removing temp jar lib"
 
 rm -r $TEMP_JAR_DIR

@@ -1,0 +1,7 @@
+#!/bin/bash 
+
+HSQLDB_PATH=$(find ~/.m2 -name hsqldb*.jar)
+SQLTOOL_PATH=$(find ~/.m2 -name sqltool*.jar)
+
+java -cp $SQLTOOL_PATH:$HSQLDB_PATH org.hsqldb.cmdline.SqlTool --rcFile=$(find . -name "sqltool.rc") zombunity 
+
