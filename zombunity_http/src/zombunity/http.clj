@@ -67,8 +67,8 @@
                                 (swap! conn-ids dissoc c)
                                 (swap! id-conns dissoc conn-id)))
                             (onMessage [c j] (proc-msg-from-client c j))))
-                        (println "Creating static file handler for " (str (get-proj-path) "/zombunity_http/resource/"))
-                        (.add (StaticFileHandler. (str (get-proj-path) "/resource/")))
+                        (println "Creating static file handler for /zombunity_http/resource/")
+                        (.add (StaticFileHandler. "zombunity_http/resource/"))
                         (.start)
                         (->> (.getUri) (println "Started webserver on ")))]
     (reset! webserver webbitServer))
