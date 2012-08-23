@@ -1,5 +1,6 @@
 (ns zombunity.websocket
   (:require [goog.net.WebSocket :as ws]
+            [goog.dom :as dom]
             [zombunity.dispatch :as dispatch]
             [clojure.string :as string]))
 
