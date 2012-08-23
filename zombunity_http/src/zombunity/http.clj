@@ -52,7 +52,7 @@
   (s/replace (. (java.io.File. ".") getCanonicalPath) #"\\" "/"))
 
 (defn -main []
-  (let [webbitServer (doto (WebServers/createWebServer 8080)
+  (let [webbitServer (doto (WebServers/createWebServer 80)
                         (.add "/websocket"
                           (proxy [WebSocketHandler] []
                             (onOpen [c]
@@ -67,7 +67,6 @@
                                 (swap! conn-ids dissoc c)
                                 (swap! id-conns dissoc conn-id)))
                             (onMessage [c j] (proc-msg-from-client c j))))
-                        (println "Creating static file handler for /zombunity_http/resource/")
                         (.add (StaticFileHandler. "zombunity_http/resource/"))
                         (.start)
                         (->> (.getUri) (println "Started webserver on ")))]
