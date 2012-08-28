@@ -134,9 +134,7 @@ If the database goes down, the HTTP and MUD servers should be restarted.
 
 ### Windows
 
-I've simplified this by using Leiningen, but only slightly. IDEA is no longer required. Also, I've switched to
-running the MUD on a separate Lucid Puppy GNU/Linux box so all the commands are for GNU/Linux, but nothing
-so onerous that it can't be fairly easily translated to Windows.
+I've simplified this by using Leiningen, but only slightly. IDEA is no longer required. Also, 
 
 This is a four component system and I'm slowly working out how to make it a one step, portable process; there's
 a MUD server, an HTTP server, a web client and an HSQLDB server.
@@ -147,13 +145,7 @@ a MUD server, an HTTP server, a web client and an HSQLDB server.
 
     git clone https://github.com/cwmaguire/zombunity-mud
 
-1. Download Hyper SQL Database
-
-    [HSQLDB] (http://hsqldb.org)
-
-    Unzip into a directory
-
-    Familiarize yourself with the lib directory where the HSQLDB.jar and SqlTool.jar files are.
+1. Run lein deps
 
 1. Start the HSQLDB server with a database called "zombunity"
 
@@ -168,10 +160,6 @@ a MUD server, an HTTP server, a web client and an HSQLDB server.
     Note the slashes: fwd for .rc, backward for .sql
 
 1. Run the http server with "lein run"
-
-    NOTE: you need to change the hard-coded StaticFileHandler path in http.clj (I know, I know, that's terrible. I'll get to it)
-
-    change to the director where project.clj is
 
     open a command prompt / terminal and run "lein run"
 
