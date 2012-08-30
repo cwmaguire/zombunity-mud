@@ -49,7 +49,7 @@
 
 (defn find-daemons
   []
-  (filter #(re-find #"zombunity\.daemon" (str %)) (tools-ns/find-namespaces-on-classpath)))
+  (filter #(re-find #"zombunity\.daemon" (str %)) (set (tools-ns/find-namespaces-on-classpath))))
 
 (defn register-daemon-msg-type-fn
   [fn msg-type]
@@ -64,7 +64,10 @@
 (defn register-daemon
   "registers the daemon in the daemon function map, registers
   dispatch function with daemon, requires daemon namespace"
-  [daemon-ns]
+
+  ([daemon-ns] (register-daemon dispatch daemon-ns))
+
+  ([dispatch-fn daemon-ns]
 
   (println "Registering dameon: " daemon-ns)
 
@@ -77,7 +80,7 @@
   (if-let [register-dispatch-fn (get-ns-value daemon-ns reg-dispatch-fn-name)]
     (register-dispatch-fn dispatch)
     (println "Did not find register-dispatch-fn for " daemon-ns))
-  nil)
+  nil))
 
 (defn register-daemons
   []
@@ -88,7 +91,7 @@
 (defn start-processing-messages
   []
   (let [task (proxy [TimerTask] []
-    (run [] (process-messages)))]
+               (run [] (process-messages)))]
     (.schedule (reset! timer (new Timer true)) task (long 0) (long 2000))))
 
 (defn -main []
