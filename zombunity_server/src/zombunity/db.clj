@@ -30,7 +30,7 @@
   [m]
   (println "sending message to client: " m)
   (jdbc/with-connection db
-    (jdbc/insert-records "msg_to_client" {:json (json-str m)})))
+    (jdbc/insert-records "msg_to_client" {:json (json/json-str m)})))
 
 (defn select
   "Run a select statment and return the results as a list of maps"

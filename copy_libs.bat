@@ -1,16 +1,32 @@
 @echo off
 
-echo.
-echo.Copying files from repo to server lib dir
-
-for /R C:\Users\lulu\.m2 %%i in (*.jar) do copy %%i d:\dev_zombunity\zombunity\zombunity_server\lib
-
-echo.
-echo. copying files from server lib to http lib
-
-copy d:\dev_zombunity\zombunity\zombunity_server\lib\*.jar d:\dev_zombunity\zombunity\zombunity_http\lib
+SET PROJ_PATH=d:\dev_zombunity\zombunity
+SET SERVER_LIB=zombunity_server\lib
+SET HTTP_LIB=zombunity_http\lib
+SET WEB_LIB=zombunity_web\lib
 
 echo.
-echo. copying files from server lib to web lib
+echo Ensuring lib dirs exist (ignore any "already exists" errors)
+echo.
 
-copy d:\dev_zombunity\zombunity\zombunity_server\lib\*.jar d:\dev_zombunity\zombunity\zombunity_web\lib
+md %PROJ_PATH%\%SERVER_LIB%
+md %PROJ_PATH%\%HTTP_LIB%
+md %PROJ_PATH%\%WEB_LIB%
+
+echo.
+echo Copying files from repo to server lib dir
+echo.
+
+for /R C:\Users\lulu\.m2 %%i in (*.jar) do copy %%i %PROJ_PATH%\%SERVER_LIB%
+
+echo.
+echo Copying files from server lib to http lib
+echo.
+
+copy d:\dev_zombunity\zombunity\zombunity_server\lib\*.jar %PROJ_PATH%\%HTTP_LIB%
+
+echo.
+echo Copying files from server lib to web lib
+echo.
+
+copy d:\dev_zombunity\zombunity\zombunity_server\lib\*.jar %PROJ_PATH%\%WEB_LIB%

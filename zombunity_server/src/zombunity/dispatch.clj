@@ -47,9 +47,9 @@
   (doall (map dispatch (db/get-messages))))
 
 
-(defn find-daemons
-  []
-  (filter #(re-find #"zombunity\.daemon" (str %)) (set (tools-ns/find-namespaces-on-classpath))))
+(defn find-namespaces
+  [pattern]
+  (filter #(re-find pattern (str %)) (set (tools-ns/find-namespaces-on-classpath))))
 
 (defn register-daemon-msg-type-fn
   [fn msg-type]
@@ -69,22 +69,22 @@
 
   ([dispatch-fn daemon-ns]
 
-  (println "Registering dameon: " daemon-ns)
+    (println "Registering dameon: " daemon-ns)
 
-  (require [daemon-ns] :reload)
+    (require [daemon-ns] :reload)
 
-  (if-let [msg-types (get-ns-value daemon-ns msg-type-var-name)]
-    (doall (map (partial register-daemon-msg-type-fn (get-ns-value daemon-ns process-fn-name)) msg-types))
-    (println "Did not find msg-type list for " daemon-ns))
+    (if-let [msg-types (get-ns-value daemon-ns msg-type-var-name)]
+      (doall (map (partial register-daemon-msg-type-fn (get-ns-value daemon-ns process-fn-name)) msg-types))
+      (println "Did not find msg-type list for " daemon-ns))
 
-  (if-let [register-dispatch-fn (get-ns-value daemon-ns reg-dispatch-fn-name)]
-    (register-dispatch-fn dispatch)
-    (println "Did not find register-dispatch-fn for " daemon-ns))
-  nil))
+    (if-let [register-dispatch-fn (get-ns-value daemon-ns reg-dispatch-fn-name)]
+      (register-dispatch-fn dispatch-fn)
+      (println "Did not find register-dispatch-fn for " daemon-ns))
+    nil))
 
 (defn register-daemons
   []
-  (doall (map register-daemon (find-daemons)))
+  (doall (map register-daemon (find-namespaces #"zombunity\.daemon")))
   nil)
 
 
@@ -94,6 +94,6 @@
                (run [] (process-messages)))]
     (.schedule (reset! timer (new Timer true)) task (long 0) (long 2000))))
 
-(defn -main []
+(defn main []
   (register-daemons)
   (start-processing-messages))

@@ -13,4 +13,5 @@
 
 (defn process-msg
   [m]
+  (println "ns-test: process-msg: " m)
   (@*dispatch-fn* m))
