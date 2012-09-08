@@ -1,0 +1,1 @@
+get-childitem c:\Users\lulu\.m2 -recurse -include *.jar | copy-item -destination d:\dev_zombunity\zombunity\zombunity_server\lib
