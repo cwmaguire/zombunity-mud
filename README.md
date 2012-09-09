@@ -112,29 +112,41 @@ If the database goes down, the HTTP and MUD servers should be restarted.
 
     > lein deps
 
-2. Start the database
+1. Start the database
 
     > ./start_db
 
-3. Load the database with data 
+1. Load the database with data
 
     > ./load_data
 
-4. Build the ClojureScript
+1. Build the ClojureScript
 
     > lein run -m zombunity.build/build
 
-5. Run the HTTP server
+1. Run the HTTP server
 
     > lein run
 
-6. Run the MUD server
+1. Run the MUD server
 
     > ./start_mud_repl
 
     > (ns zombunity.dispatch) <br>
     > (register-daemons) <br>
     > (start-processing-messages)
+
+1. Open the web page:
+
+    Open a web browser
+
+    Tested with Chrome, should work with Firefox, probably won't work with IE or Opera
+
+    Browse to the zombunity.html file
+
+    e.g. http://localhost/zombunity.html
+
+1. Click "Connect"
 
 ### Windows
 
