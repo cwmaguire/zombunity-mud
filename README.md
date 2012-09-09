@@ -75,6 +75,10 @@ All scripts assume they are run from you zombunity dev directory (i.e. where you
 
 #### First Run
 
+1. Clone the git repo
+
+    git clone https://github.com/cwmaguire/zombunity-mud
+
 1. ./start
 
     runs lein deps <br>
@@ -106,93 +110,74 @@ If the database goes down, the HTTP and MUD servers should be restarted.
 
 1. Load dependencies with
 
-> lein deps
+    > lein deps
 
 2. Start the database
 
-> ./start_db
+    > ./start_db
 
 3. Load the database with data 
 
-> ./load_data 
+    > ./load_data
 
 4. Build the ClojureScript
 
-> lein run -m zombunity.build/build
+    > lein run -m zombunity.build/build
 
 5. Run the HTTP server
 
-> lein run
+    > lein run
 
 6. Run the MUD server
 
-> ./start_mud_repl
+    > ./start_mud_repl
 
-> (ns zombunity.dispatch) <br>
-> (register-daemons) <br>
-> (start-processing-messages)
+    > (ns zombunity.dispatch) <br>
+    > (register-daemons) <br>
+    > (start-processing-messages)
 
 ### Windows
 
-I've simplified this by using Leiningen, but only slightly. IDEA is no longer required. Also, 
-
-This is a four component system and I'm slowly working out how to make it a one step, portable process; there's
-a MUD server, an HTTP server, a web client and an HSQLDB server.
+This is slowly evolving to require less and less steps
 
 1. Clone the git repo
-
-    The jars are included, no need to worry about dependencies at this point.
 
     git clone https://github.com/cwmaguire/zombunity-mud
 
 1. Run lein deps
 
-1. Start the HSQLDB server with a database called "zombunity"
+1. Start the HSQLDB server
 
-    %HSQLDB_PATH%\lib>java -cp hsqldb.jar org.hsqldb.server.Server --database.0 file:zombunity --dbname.0 zombunity
+    > start_db.bat
 
-1. Run the setup SQL with SqlTool:
+1. Run the setup SQL with SqlTool
 
-    %HSQLDB_PATH%\lib>java -jar sqltool.jar --rcFile=%ZOMBUNITY_PROJ_PATH%/zombunity_server/db/sqltool.rc zombunity %ZOMBUNITY_PROJ_PATH%\zombunity_server\db\zombunity.sql
-
-    e.g. D:\dev\hsqldb\lib>java -jar sqltool.jar --rcFile=d:/dev_zombunity/zombunity/zombunity_server/db/sqltool.rc zombunity d:\dev_zombunity\zombunity\zombunity_server\db\zombunity.sql
-
-    Note the slashes: fwd for .rc, backward for .sql
+    > load_db.bat
 
 1. Run the http server with "lein run"
 
-    open a command prompt / terminal and run "lein run"
-
-1. Run a REPL for the MUD server
-
-    I haven't worked out yet (I've had enough to do already) to get Leiningen to leave my server running.
-
-    Instead we'll start our own repl.
-
-    First copy all the .jar files from the local maven repo to a directory so we can set up the classpath easier:
-
-    cd ~/.m2/repository
-    find -name *.jar | xargs -i cp {} ~/my_temp_lib_dir
-
-    Next run the REPL through the clojure jar:
-
-    java -cp ~/my_temp_lib_dir/clojure-1.4.0.jar:~/my_temp_lib_dir:<path to zombunity_server/src> clojure.main
-
-    Run the main function:
-
-    (main)
+    open a command prompt to the project dir and run "lein run"
 
 1. Build the JavaScript
 
-    NOTE: You have to change the source and destination paths in build.clj (I know, I fix, I fix!)
+    open a command prompt to the project dir and run "lein run -m zombunity.build/build"
 
-    Open a command prompt / terminal
+1. Copy libs from local repo to project lib folder
 
-    Change directory to the root of the project (where project.clj is)
+    > copy_libs.bat
 
-    Run the build process:
+1. Run a REPL for the MUD server
 
-    lein run -m zombunity.web/build
+    Assuming %SERV_PATH% is the path to your zombunity_server directory (e.g. c:\dev\zombunity\zombunity_server)
+
+    > java -cp %SERV_PATH%\lib\clojure-1.4.0.jar;%SERV_PATH%\lib\*;%SERV_PATH%\src\; clojure.main -i %SERV_PATH%\src\zombunity\dispatch.clj -r
+
+    This will load up the dispatch script (-i) but keep the REPL open (-r)
+
+    Run the main function:
+
+    > (main)
+
 
 1. Open the web page:
 
