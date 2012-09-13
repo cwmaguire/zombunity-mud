@@ -1,7 +1,7 @@
 (ns zombunity.daemon.chat
   (:require [zombunity.db :as db]))
 
-(def msg-types [:chat])
+(def msg-filters [{:type :chat :filter (fn [m] (:user-id m))}])
 
 (def ^:dynamic *dispatch-fn* (atom nil))
 

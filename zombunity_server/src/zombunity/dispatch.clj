@@ -20,11 +20,11 @@
 (def timer (atom nil))
 (def process-fn-name "process-msg")
 (def reg-dispatch-fn-name "register-dispatch-fn")
-(def msg-type-var-name "msg-types")
+(def msg-filters-var-name "msg-filters")
 
-(def daemon-fns (atom {:client #{db/msg-client}
-                       :all-clients #{msg-all-clients}
-                       :user-logged-in #{register-user-conn}}))
+(def daemon-fns (atom {:client [{:fn db/msg-client}]
+                       :all-clients [{:fn msg-all-clients}]
+                       :user-logged-in [{:fn register-user-conn}]}))
 
 (defn cmd-not-recognized
   [m]
@@ -34,12 +34,10 @@
   "dispatch events for logged in users with the user-id or dispatch to the login daemon-fns"
   [{:keys [conn-id type user-id] :as m}]
   (println "Got message: " m)
-  (let [regd-user-id (@conn-users conn-id user-id)]
-    (if (and
-          (nil? regd-user-id)
-          (not (#{:client :login-max-attempts :user-logged-in :all-clients} (keyword type))))
-      (doall (map #(% m) (@daemon-fns :login)))
-      (doall (map #(% (assoc m :user-id regd-user-id)) (get @daemon-fns (keyword type) [cmd-not-recognized]))))))
+  (let [m (assoc m :user-id (@conn-users conn-id user-id))
+        fn-filters (get @daemon-fns (keyword type) [{:fn cmd-not-recognized}])
+        fns (map :fn (filter #(if-let [f (:filter %)] (f m) true) fn-filters))]
+    (doall (map #(% m) fns))))
 
 (defn process-messages
   "Grabs messages form the database and dispatches them to the appropriate daemon"
@@ -51,10 +49,16 @@
   [pattern]
   (filter #(re-find pattern (str %)) (set (tools-ns/find-namespaces-on-classpath))))
 
-(defn register-daemon-msg-type-fn
-  [fn msg-type]
-  (let [fns (or (get @daemon-fns msg-type) #{})]
-    (swap! daemon-fns assoc msg-type (conj fns fn))))
+(defn map-daemon-filters-to-fn
+  "Register the filter function and process function against the message type; msg-filters can be a msg-type keyword
+   (e.g. :chat) or a map of {:type msg-type :filter filter-fn}, e.g. {:type :chat :filter (fn [m] true)}. The filter
+   function can be nil or a function that takes a single argument."
+  [fn msg-filters]
+  (let [{:keys [type filter]} (cond
+                                    (keyword? msg-filters) {:type msg-filters}
+                                    (map? msg-filters) msg-filters)
+        regd-fns (or (get @daemon-fns type) #{})]
+    (swap! daemon-fns assoc type (conj regd-fns {:fn fn :filter filter}))))
 
 (defn get-ns-value
   "Get a value from a var in a namespace using the namespace and a string containing the name of the var"
@@ -73,8 +77,8 @@
 
     (require [daemon-ns] :reload)
 
-    (if-let [msg-types (get-ns-value daemon-ns msg-type-var-name)]
-      (doall (map (partial register-daemon-msg-type-fn (get-ns-value daemon-ns process-fn-name)) msg-types))
+    (if-let [msg-filters (get-ns-value daemon-ns msg-filters-var-name)]
+      (doall (map (partial map-daemon-filters-to-fn (get-ns-value daemon-ns process-fn-name)) msg-filters))
       (println "Did not find msg-type list for " daemon-ns))
 
     (if-let [register-dispatch-fn (get-ns-value daemon-ns reg-dispatch-fn-name)]

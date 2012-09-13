@@ -16,4 +16,7 @@
 (deftest test-register-daemon
   (d/register-daemon test-dispatch-callback (first (d/find-namespaces #"zomb.*\.ns-test")))
   ;(d/register-daemon test-dispatch "ns-test")
-  (is (= [1] (d/dispatch {:conn-id 0 :type :test :user-id 0})) "Registering message types and dispatch callback"))
+  (is (= [1] (d/dispatch {:type :test})) "Dispatch on type keyword")
+  (is (= [1] (d/dispatch {:type :test-with-filter :pass true})) "Dispatch on keyword with filter that passes")
+  (is (= [] (d/dispatch {:type :test-with-filter :pass false})) "Dispatch on keyword with filter that fails")
+  (is (= [] (d/dispatch {:type :test-with-filter})) "Dispatch on keyword with filter that fails"))

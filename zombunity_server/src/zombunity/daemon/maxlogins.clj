@@ -1,7 +1,7 @@
 (ns zombunity.daemon.maxlogins
   (:require [clojure.string :as str]))
 
-(def msg-types [:login-max-attempts])
+(def msg-filters [:login-max-attempts])
 
 (def ^:dynamic *dispatch-fn* (atom nil))
 

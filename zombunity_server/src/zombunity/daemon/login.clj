@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]
             [zombunity.db :as db]))
 
-(def msg-types [:login])
+(def msg-filters [:login])
 (def max-attempts 3)
 
 (def ^:dynamic *dispatch-fn* (atom nil))

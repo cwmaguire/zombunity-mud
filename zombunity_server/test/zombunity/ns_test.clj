@@ -1,6 +1,8 @@
 (ns zombunity.ns-test)
 
-(def msg-types [:test])
+; You can specify just a keyword for the type, or a map with the type and the filter function
+(def msg-filters [:test
+                  {:type :test-with-filter :filter (fn [m] (:pass m))}])
 
 (def ^:dynamic *dispatch-fn* (atom nil))
 
