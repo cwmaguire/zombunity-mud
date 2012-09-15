@@ -60,7 +60,7 @@
                               (let [conn-id (swap! curr-conn-id inc)]
                                   (swap! id-conns assoc conn-id c)
                                   (swap! conn-ids assoc c conn-id)
-                                  (db/msg-server (json/json-str {:type "login" :conn-id conn-id}))))
+                                  (db/msg-server (json/json-str {:type "connect" :conn-id conn-id}))))
                             (onClose [c]
                               (println "closed" c)
                               (let [conn-id (get @conn-ids c)]

@@ -40,9 +40,11 @@
 
 (defn insert
   "Run an insert statment with a table name and a map of column names (keywords or strings) to values"
-  [table column-vals]
-  (jdbc/with-connection db
-    (jdbc/insert-record table column-vals)))
+  ([table column-vals] (insert [table column-vals]))
+
+  ([table-column-vals]
+    (jdbc/with-connection db
+      (map (fn [[t vs]] (jdbc/insert-record t vs)) table-column-vals))))
 
 (defn update
   "Run an update statement"

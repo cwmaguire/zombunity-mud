@@ -19,7 +19,6 @@
 
 (def timer (atom nil))
 (def process-fn-name "process-msg")
-(def reg-dispatch-fn-name "register-dispatch-fn")
 (def msg-filters-var-name "msg-filters")
 
 (def daemon-fns (atom {:client [{:fn db/msg-client}]
@@ -27,25 +26,24 @@
                        :user-logged-in [{:fn register-user-conn}]}))
 
 (defn cmd-not-recognized
+  "A very simple daemon to report to the user that no daemon matched their command"
   [m]
   (db/msg-client (assoc m :message (str "Command not recognized: " (m :type)))))
 
 (defn dispatch
-  "dispatch events for logged in users with the user-id or dispatch to the login daemon-fns"
-  [{:keys [conn-id type user-id] :as m}]
-  (println "Got message: " m)
-  (let [m (assoc m :user-id (@conn-users conn-id user-id))
+  "dispatch events to daemon functions by type, filtered by filter functions"
+  [{:keys [conn-id type user-id] :as msg}]
+  (println "Got message: " msg)
+  (let [msg (assoc msg :user-id (@conn-users conn-id user-id))
         fn-filters (get @daemon-fns (keyword type) [{:fn cmd-not-recognized}])
-        fns (map :fn (filter #(if-let [f (:filter %)] (f m) true) fn-filters))]
-    (doall (map #(% m) fns))))
+        fns (map :fn (filter #(if-let [f (:filter %)] (f msg) true) fn-filters))]
+    (doall (map #(% msg) fns))))
 
-(defn process-messages
-  "Grabs messages form the database and dispatches them to the appropriate daemon"
+(defn dispatch-db-messages
   []
   (doall (map dispatch (db/get-messages))))
 
-
-(defn find-namespaces
+(defn filter-classpath-namespaces
   [pattern]
   (filter #(re-find pattern (str %)) (set (tools-ns/find-namespaces-on-classpath))))
 
@@ -66,38 +64,30 @@
   (var-get (ns-resolve ns (symbol var-name))))
 
 (defn register-daemon
-  "registers the daemon in the daemon function map, registers
-  dispatch function with daemon, requires daemon namespace"
+  "registers the daemon in the daemon function map, requires daemon namespace"
+  ([daemon-ns]
 
-  ([daemon-ns] (register-daemon dispatch daemon-ns))
+    (println "Registering daemon: " daemon-ns)
 
-  ([dispatch-fn daemon-ns]
-
-    (println "Registering dameon: " daemon-ns)
-
-    (require [daemon-ns] :reload)
+    (require [daemon-ns])
 
     (if-let [msg-filters (get-ns-value daemon-ns msg-filters-var-name)]
       (doall (map (partial map-daemon-filters-to-fn (get-ns-value daemon-ns process-fn-name)) msg-filters))
       (println "Did not find msg-type list for " daemon-ns))
-
-    (if-let [register-dispatch-fn (get-ns-value daemon-ns reg-dispatch-fn-name)]
-      (register-dispatch-fn dispatch-fn)
-      (println "Did not find register-dispatch-fn for " daemon-ns))
     nil))
 
 (defn register-daemons
   []
-  (doall (map register-daemon (find-namespaces #"zombunity\.daemon")))
+  (doall (map register-daemon (filter-classpath-namespaces #"zombunity\.daemon")))
   nil)
 
 
-(defn start-processing-messages
+(defn start-dispatch-scheduler
   []
   (let [task (proxy [TimerTask] []
-               (run [] (process-messages)))]
+               (run [] (dispatch-db-messages)))]
     (.schedule (reset! timer (new Timer true)) task (long 0) (long 2000))))
 
 (defn main []
   (register-daemons)
-  (start-processing-messages))
+  (start-dispatch-scheduler))
