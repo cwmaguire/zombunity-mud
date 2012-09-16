@@ -7,10 +7,6 @@
 (def multi-word-data [["chat_msg" {:msg "1 2 3"}] ["msg_to_server" {:type :all-clients :message ":type :chat :text \"1 2 3\""}]])
 (def single-word-data [["chat_msg" {:msg "1"}] ["msg_to_server" {:type :all-clients :message ":type :chat :text \"1\""}]])
 
-(defn test-dispatch-callback
-  [m]
-  (:message m))
-
 (deftest test-chat
   (disp/register-daemon  (first (disp/filter-classpath-namespaces #"\.chat$")))
 

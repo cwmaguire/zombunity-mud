@@ -1,7 +1,7 @@
 (ns zombunity.dispatch
   (:import [java.util TimerTask Timer]
            [java.io File])
-  (:require [zombunity.db :as db]
+  (:require [zombunity.data :as data]
             [clojure.data.json :as json]
             [clojure.tools.namespace :as tools-ns]))
 
@@ -21,27 +21,21 @@
 (def process-fn-name "process-msg")
 (def msg-filters-var-name "msg-filters")
 
-(def daemon-fns (atom {:client [{:fn db/msg-client}]
-                       :all-clients [{:fn msg-all-clients}]
+(def daemon-fns (atom {:all-clients [{:fn msg-all-clients}]
                        :user-logged-in [{:fn register-user-conn}]}))
-
-(defn cmd-not-recognized
-  "A very simple daemon to report to the user that no daemon matched their command"
-  [m]
-  (db/msg-client (assoc m :message (str "Command not recognized: " (m :type)))))
 
 (defn dispatch
   "dispatch events to daemon functions by type, filtered by filter functions"
   [{:keys [conn-id type user-id] :as msg}]
   (println "Got message: " msg)
   (let [msg (assoc msg :user-id (@conn-users conn-id user-id))
-        fn-filters (get @daemon-fns (keyword type) [{:fn cmd-not-recognized}])
+        fn-filters (get @daemon-fns (keyword type) (get @daemon-fns nil))
         fns (map :fn (filter #(if-let [f (:filter %)] (f msg) true) fn-filters))]
     (doall (map #(% msg) fns))))
 
-(defn dispatch-db-messages
+(defn dispatch-new-messages
   []
-  (doall (map dispatch (db/get-messages))))
+  (doall (map dispatch (data/get-messages))))
 
 (defn filter-classpath-namespaces
   [pattern]
@@ -81,11 +75,10 @@
   (doall (map register-daemon (filter-classpath-namespaces #"zombunity\.daemon")))
   nil)
 
-
 (defn start-dispatch-scheduler
   []
   (let [task (proxy [TimerTask] []
-               (run [] (dispatch-db-messages)))]
+               (run [] (dispatch-new-messages)))]
     (.schedule (reset! timer (new Timer true)) task (long 0) (long 2000))))
 
 (defn main []

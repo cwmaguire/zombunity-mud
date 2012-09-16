@@ -1,8 +1,13 @@
 (ns zombunity.data)
 
-(def target (atom ::hsqldb))
+(def target (atom :zombunity.db/hsqldb))
 
 (defn set-target [k] (reset! target k))
 
-(defmulti select (fn [_] (deref target)))
-(defmulti insert (fn [_] (deref target)))
+(defn dispatch [_] (deref target))
+
+(defmulti select dispatch)
+(defmulti insert dispatch)
+(defmulti update dispatch)
+(defmulti get-messages dispatch)
+(defmulti msg-client dispatch)
