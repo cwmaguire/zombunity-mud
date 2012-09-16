@@ -8,6 +8,7 @@
 
 (defn max-login-attempts
   [conn-id]
+  (data/delete "login_state" [(str "conn_id = " conn-id)])
   (data/insert "msg_to_server" {:type "login-max-attempts" :conn-id conn-id}))
 
 (defn prompt
@@ -16,26 +17,28 @@
 
 (defn first-login-prompt
   [conn-id]
-  (data/insert "login_state" {:conn_id conn-id :num_logins 1 :num_passwords 0})
+  (data/insert "login_state" {:conn-id conn-id :num-logins 1 :num-passwords 0})
   (prompt conn-id "enter login:"))
 
 (defn login-prompt
   [conn-id curr-logins]
-  (data/update "login_state" ["conn_id = ?" conn-id] {:num_logins (inc curr-logins)})
+  (data/update "login_state" ["conn_id = ?" conn-id] {:num-logins (inc curr-logins)})
   (prompt conn-id "enter login:"))
 
 (defn password-prompt
   [conn-id curr-passwords]
-  (data/update "login_state" ["conn_id = ?" conn-id] {:num_passwords (inc curr-passwords)})
+  (data/update "login_state" ["conn_id = ?" conn-id] {:num-passwords (inc curr-passwords)})
   (prompt conn-id "enter password:"))
 
 (defn store-login
   [conn-id login]
+  (println "Updating login_state " (data/select ["from login_state"]) " with login: " login)
   (data/update "login_state" ["conn_id = ?" conn-id] {:login login}))
 
 (defn login-succeeded
   [conn-id user-id]
   (prompt conn-id "login successful")
+  (data/delete "login_state" [(str "conn_id = " conn-id)])
   (data/insert "msg_to_server" {:type :user-logged-in :conn-id conn-id :user-id user-id}))
 
 (defn get-user-id
@@ -57,15 +60,21 @@
   (first (data/select ["select login, num_logins, num_passwords from login_state where conn_id = ?" conn-id])))
 
 (defn process-msg
-  [{:keys [conn-id text]}]
-  (println "Processing login message for conn " conn-id " with text " text)
+  [{:keys [conn-id type]}]
+  (println "Processing login message for conn " conn-id " with text " type)
+  (println "Login state: " (get-login-state conn-id))
   (if-let [{:keys [login, num_logins, password, num_passwords]} (get-login-state conn-id)]
     (cond
       (< num_passwords num_logins)
         (do
-          (store-login conn-id text)
+          (println "num_passwords (" num_passwords ") < num_logins (" num_logins ")")
+          (store-login conn-id type)
           (password-prompt conn-id num_passwords))
       :default
-        (check-login conn-id login text num_logins))
-    (first-login-prompt conn-id)))
+        (do
+          (println "num_passwords (" num_passwords ") >= num_logins (" num_logins ")")
+          (check-login conn-id login type num_logins)))
+    (do
+      (println "no login state")
+      (first-login-prompt conn-id))))
 

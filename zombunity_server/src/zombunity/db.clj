@@ -52,4 +52,14 @@
   (jdbc/with-connection db
     (jdbc/update-values table where-params column-values)))
 
+(defn zombunity.data/is-logging-in? ::hsqldb
+  "Return true is this connection is in the middle of logging in"
+  [conn-id]
+  (seq (zombunity.data/select ["select conn_id from login_state where conn_id = ?" conn-id])))
+
+(defn zombunity.data/delete ::hsqldb
+  [table where-clauses]
+  (jdbc/with-connection db
+    (jdbc/delete-rows table where-clauses)))
+
 
