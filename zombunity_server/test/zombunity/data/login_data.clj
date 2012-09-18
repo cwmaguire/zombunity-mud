@@ -39,4 +39,4 @@
 
 (defmethod zombunity.data/is-logging-in? ::login
   [_]
-  (get @data :login-state))
+  (get @data "login_state"))

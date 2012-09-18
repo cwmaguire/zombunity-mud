@@ -2,8 +2,12 @@
   (:require [clojure.string :as str]
             [zombunity.data :as data]))
 
-(def msg-filters [{:type nil
-                  :filter (fn [msg] (or (nil? (:user-id msg)) (data/is-logging-in? (:conn-id msg))))}])
+; respond to the :login message if the user hasn't logged in and isn't currently logging in;
+; or respond to anything if the user is currently logging in
+(def msg-filters [{:type :login
+                   :filter (fn [msg] (and (nil? (:user-id msg)) (not (data/is-logging-in? (:conn-id msg)))))}
+                  {:type nil
+                   :filter (fn [msg] (data/is-logging-in? (:conn-id msg)))}])
 (def max-attempts 3)
 
 (defn max-login-attempts
@@ -62,7 +66,6 @@
 (defn process-msg
   [{:keys [conn-id type]}]
   (println "Processing login message for conn " conn-id " with text " type)
-  (println "Login state: " (get-login-state conn-id))
   (if-let [{:keys [login, num_logins, password, num_passwords]} (get-login-state conn-id)]
     (cond
       (< num_passwords num_logins)
@@ -75,6 +78,5 @@
           (println "num_passwords (" num_passwords ") >= num_logins (" num_logins ")")
           (check-login conn-id login type num_logins)))
     (do
-      (println "no login state")
       (first-login-prompt conn-id))))
 

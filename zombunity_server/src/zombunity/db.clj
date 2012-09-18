@@ -13,7 +13,7 @@
 
 ; rs will be a sequence of maps,
 ; one for each record in the result set.
-(defn zombunity.data/get-messages ::hsqldb
+(defmethod zombunity.data/get-messages ::hsqldb
   "Remove queued server JSON messages and return them"
   []
   (jdbc/with-connection db
@@ -25,20 +25,20 @@
             (jdbc/delete-rows "msg_to_server" [ids]))
           (->> (map :json rs) (map json/read-json)))))))
 
-(defn zombunity.data/msg-client ::hsqldb
+(defmethod zombunity.data/msg-client ::hsqldb
   "Put a JSON message in the client queue"
   [m]
   (println "sending message to client: " m)
   (jdbc/with-connection db
     (jdbc/insert-records "msg_to_client" {:json (json/json-str m)})))
 
-(defn zombunity.data/select ::hsqldb
+(defmethod zombunity.data/select ::hsqldb
   "Run a select statment and return the results as a list of maps"
   [stmt-params]
   (jdbc/with-connection db
       (jdbc/with-query-results rs stmt-params (doall rs))))
 
-(defn zombunity.data/insert
+(defmethod zombunity.data/insert ::hsqldb
   "Run an insert statment with a table name and a map of column names (keywords or strings) to values"
   ([table column-vals] (insert [table column-vals])) ; call insert with the params in an array
 
@@ -46,18 +46,18 @@
     (jdbc/with-connection db
       (map (fn [[t vs]] (jdbc/insert-record t vs)) table-column-vals))))
 
-(defn zombunity.data/update ::hsqldb
+(defmethod zombunity.data/update ::hsqldb
   "Run an update statement"
   [table where-params column-values]
   (jdbc/with-connection db
     (jdbc/update-values table where-params column-values)))
 
-(defn zombunity.data/is-logging-in? ::hsqldb
+(defmethod zombunity.data/is-logging-in? ::hsqldb
   "Return true is this connection is in the middle of logging in"
   [conn-id]
   (seq (zombunity.data/select ["select conn_id from login_state where conn_id = ?" conn-id])))
 
-(defn zombunity.data/delete ::hsqldb
+(defmethod zombunity.data/delete ::hsqldb
   [table where-clauses]
   (jdbc/with-connection db
     (jdbc/delete-rows table where-clauses)))

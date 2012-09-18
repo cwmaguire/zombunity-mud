@@ -1,8 +1,9 @@
 (ns zombunity.daemon.no-match
   (:require [zombunity.db :as db]))
 
+; will respond to anything unrecognized as long as the user isn't logging in
 (def msg-filters [{:fn nil
-                   :filter (fn [msg] (not (or (:user-id msg) (db/is-logging-in? (:conn-id msg)))))}])
+                   :filter (fn [msg] (not (db/is-logging-in? (:conn-id msg))))}])
 
 (defn process-msg
   [msg]
