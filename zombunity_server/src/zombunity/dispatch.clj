@@ -21,6 +21,7 @@
 (def process-fn-name "process-msg")
 (def msg-filters-var-name "msg-filters")
 
+; these two daemons functions require access to the user connections
 (def daemon-fns (atom {:all-clients [{:fn msg-all-clients}]
                        :user-logged-in [{:fn register-user-conn}]}))
 

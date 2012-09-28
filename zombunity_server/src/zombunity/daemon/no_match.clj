@@ -1,11 +1,11 @@
 (ns zombunity.daemon.no-match
-  (:require [zombunity.db :as db]))
+  (:require [zombunity.data :as data]))
 
 ; will respond to anything unrecognized as long as the user isn't logging in
-(def msg-filters [{:fn nil
-                   :filter (fn [msg] (not (db/is-logging-in? (:conn-id msg))))}])
+(def msg-filters [{:type nil
+                   :filter (fn [msg] (not (data/is-logging-in? (:conn-id msg))))}])
 
 (defn process-msg
   [msg]
-  (db/msg-client {:conn-id conn-id :message (str "Command " (:type msg) " not recognized.")})
+  (data/msg-client {:conn-id (:conn-id msg) :message (str "Command " (:type msg) " not recognized.")})
   nil)

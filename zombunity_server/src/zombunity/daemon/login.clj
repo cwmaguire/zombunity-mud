@@ -7,7 +7,7 @@
 (def msg-filters [{:type :login
                    :filter (fn [msg] (and (nil? (:user-id msg)) (not (data/is-logging-in? (:conn-id msg)))))}
                   {:type nil
-                   :filter (fn [msg] (data/is-logging-in? (:conn-id msg)))}])
+                   :filter (fn [msg] (and (nil? (:user-id msg)) (data/is-logging-in? (:conn-id msg))))}])
 (def max-attempts 3)
 
 (defn max-login-attempts
