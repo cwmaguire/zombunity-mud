@@ -1,5 +1,5 @@
 (ns zombunity.daemon.menu
-  (:require [zombunity.db :as db]))
+  (:require [zombunity.data :as data]))
 
 (def msg-filters [:menu])
 
@@ -7,5 +7,5 @@
 
 (defn process-msg
   [msg]
-  (db/msg-client {:conn-id (:conn-id msg) :message menu-msgs})
+  (data/msg-client {:conn-id (:conn-id msg) :message menu-msgs})
   nil)

@@ -8,5 +8,5 @@
   [{:keys [conn-id text]}]
   (if (not (str/blank? text))
     (let [words (str/split text #" ")]
-      (data/insert "msg_to_server"  {:type (first words) :args (rest words) :conn-id conn-id}))))
+      (data/insert ["msg_to_server"  {:type (first words) :args (rest words) :conn-id conn-id}]))))
 
