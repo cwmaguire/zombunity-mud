@@ -7,6 +7,10 @@ An event-driven web MUD framework consisting of a MUD server, http server and we
 
 Scroll to the bottom for a text version of "Getting Started"
 
+YouTube Project Updates:
+--------------------------------------------
+[Live DB Unit Tests & Deployment Scripts] (http://www.youtube.com/watch?v=Xb-_RwmZaZc) <br>
+
 YouTube Code Tutorials (Latest to Earliest):
 --------------------------------------------
 [Data Interface & Custom Data Test Data Providers] (http://www.youtube.com/watch?v=4wQIEikNlbs) <br>
