@@ -2,6 +2,7 @@
   (:import [java.util TimerTask Timer]
            [java.io File])
   (:require [zombunity.data :as data]
+            [zombunity.db :as db]
             [clojure.data.json :as json]
             [clojure.tools.namespace :as tools-ns]))
 
