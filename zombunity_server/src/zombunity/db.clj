@@ -40,7 +40,7 @@
   (jdbc/with-connection db
       (jdbc/with-query-results rs stmt-params (doall rs))))
 
-;"Run an insert statment with a table name and a map of column names (keywords or strings) to values"
+;"Run insert statements for each vector of a table name and a map of column names (keywords or strings) to values"
 (defmethod zombunity.data/insert ::hsqldb
   [table-column-vals]
     (jdbc/with-connection db

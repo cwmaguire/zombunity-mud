@@ -1,7 +1,7 @@
 (ns zombunity.daemon.move
   (:require [zombunity.data :as data]))
 
-(def msg-types [:n :s :e :w :u :d ])
+(def msg-filters [:n :s :e :w :u :d :nw :ne :sw :se])
 
 (defn process-msg
   [{:keys [conn-id]}]

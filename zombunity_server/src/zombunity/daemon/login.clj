@@ -13,7 +13,7 @@
 (defn max-login-attempts
   [conn-id]
   (data/delete "login_state" [(str "conn_id = " conn-id)])
-  (data/insert ["msg_to_server" {:type "login-max-attempts" :conn-id conn-id}]))
+  (data/insert [["msg_to_server" {:type "login-max-attempts" :conn-id conn-id}]]))
 
 (defn prompt
   [conn-id prompt]
@@ -21,7 +21,7 @@
 
 (defn first-login-prompt
   [conn-id]
-  (data/insert ["login_state" {:conn-id conn-id :num-logins 1 :num-passwords 0}])
+  (data/insert [["login_state" {:conn-id conn-id :num-logins 1 :num-passwords 0}]])
   (prompt conn-id "enter login:"))
 
 (defn login-prompt
@@ -43,7 +43,7 @@
   [conn-id user-id]
   (prompt conn-id "login successful")
   (data/delete "login_state" [(str "conn_id = " conn-id)])
-  (data/insert ["msg_to_server" {:type :user-logged-in :conn-id conn-id :user-id user-id}]))
+  (data/insert [["msg_to_server" {:type :user-logged-in :conn-id conn-id :user-id user-id}]]))
 
 (defn get-user-id
   [login password]

@@ -22,7 +22,7 @@
   (apply hash-map (map (fn [x] (if (keyword? x) (column-keyword x) x)) (flatten (seq m)))))
 
 (defmethod zombunity.data/insert ::login
-  [table fields]
+  [[[table fields]]]
   (swap! data assoc table (column-keywords fields)))
 
 (defmethod zombunity.data/msg-client ::login

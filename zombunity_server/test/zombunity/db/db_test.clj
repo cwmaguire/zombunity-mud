@@ -9,6 +9,7 @@
     (apply str (take n (repeatedly #(get chars (int (* (rand) (count chars)))))))))
 
 (deftest test-insert-select-msg-to-server
+  (data/set-target :zombunity.db/hsqldb)
   (let [msg-to-server (rand-str 100)]
     ; insert without args wrapped in vector
     (data/insert [["msg_to_server" {:json msg-to-server}]])
@@ -20,6 +21,7 @@
   (data/delete "msg_to_server" ["1 = 1"]))
 
 (deftest test-insert-select-msg-to-client
+  (data/set-target :zombunity.db/hsqldb)
   (let [msg-to-client (rand-str 100)]
     (data/msg-client msg-to-client)
     (let [result (data/select ["select * from msg_to_client"])]
@@ -31,6 +33,7 @@
   (data/delete "msg_to_client" ["1 = 1"]))
 
 (deftest test-login-state
+  (data/set-target :zombunity.db/hsqldb)
   (let [login-1 (rand-str 100)
         login-2 (rand-str 100)
         conn-id 1
@@ -66,6 +69,7 @@
       (is (= (count result) 0) "Expected one login_state in the database"))))
 
 (deftest test-get-messages
+  (data/set-target :zombunity.db/hsqldb)
   (let [val (rand-str 100)
         msg-to-server (str "{\"a\":\"" val "\"}")]
 
