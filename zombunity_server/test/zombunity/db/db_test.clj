@@ -40,7 +40,7 @@
         conn-id 1
         num_logins 1
         num_passwords 1
-        insert-vals {:conn_id conn-id ; use keys with dashes to ensure they're converted
+        insert-vals {:conn_id conn-id
                      :login login-1
                      :num_logins 1
                      :num_passwords 1}]

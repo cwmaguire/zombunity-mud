@@ -21,17 +21,17 @@
 
 (defn first-login-prompt
   [conn-id]
-  (data/insert [["login_state" {:conn-id conn-id :num-logins 1 :num-passwords 0}]])
+  (data/insert [["login_state" {:conn_id conn-id :num_logins 1 :num_passwords 0}]])
   (prompt conn-id "enter login:"))
 
 (defn login-prompt
   [conn-id curr-logins]
-  (data/update "login_state" ["conn_id = ?" conn-id] {:num-logins (inc curr-logins)})
+  (data/update "login_state" ["conn_id = ?" conn-id] {:num_logins (inc curr-logins)})
   (prompt conn-id "enter login:"))
 
 (defn password-prompt
   [conn-id curr-passwords]
-  (data/update "login_state" ["conn_id = ?" conn-id] {:num-passwords (inc curr-passwords)})
+  (data/update "login_state" ["conn_id = ?" conn-id] {:num_passwords (inc curr-passwords)})
   (prompt conn-id "enter password:"))
 
 (defn store-login
