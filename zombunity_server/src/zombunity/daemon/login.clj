@@ -36,7 +36,7 @@
 
 (defn store-login
   [conn-id login]
-  (println "Updating login_state " (data/select ["from login_state"]) " with login: " login)
+  ;(println "Updating login_state " (data/select ["from login_state"]) " with login: " login)
   (data/update "login_state" ["conn_id = ?" conn-id] {:login login}))
 
 (defn login-succeeded
