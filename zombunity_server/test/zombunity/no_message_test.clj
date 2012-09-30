@@ -6,7 +6,7 @@
 
 (def logging-in {"login_state" {:conn_id 1 :num_logins 1 :num_passwords 0}})
 
-(def not-logging-in {"msg" {:conn-id 1 :message "Command ABC not recognized."}})
+(def not-logging-in {"msg-to-client" {:conn-id 1 :message "Command ABC not recognized."}})
 
 (deftest user-logging-in
   ; other tests may leave daemons registered

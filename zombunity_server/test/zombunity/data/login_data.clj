@@ -27,7 +27,11 @@
 
 (defmethod zombunity.data/msg-client ::login
   [msg]
-  (swap! data assoc "msg" msg))
+  (swap! data assoc "msg-to-client" msg))
+
+(defmethod zombunity.data/msg-server ::login
+  [msg]
+  (swap! data assoc "msg-to-server" msg))
 
 (defmethod zombunity.data/update ::login
   [table _ fields]

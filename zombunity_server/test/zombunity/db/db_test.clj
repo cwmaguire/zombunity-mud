@@ -11,12 +11,13 @@
 (deftest test-insert-select-msg-to-server
   (data/set-target :zombunity.db/hsqldb)
   (let [msg-to-server (rand-str 100)]
-    ; insert without args wrapped in vector
-    (data/insert [["msg_to_server" {:json msg-to-server}]])
+
+    (data/msg-server msg-to-server)
+
     (let [result (data/select ["select * from msg_to_server"])]
       (is (= (count result) 1) "Expected one message in the database")
       (is (= (count (first result)) 2) "Expected two fields from the server message table")
-      (is (= (:json (first result)) msg-to-server) "Get back expected JSON")))
+      (is (= (:json (first result)) (str "\"" msg-to-server "\"")) "Get back expected JSON")))
 
   (data/delete "msg_to_server" ["1 = 1"]))
 

@@ -5,24 +5,24 @@
             [zombunity.data.login-data :as login-data]))
 
 (def first-run {"login_state" {:conn_id 1 :num_logins 1 :num_passwords 0}
-                "msg" {:conn-id 1 :message "enter login:"}
+                "msg-to-client" {:conn-id 1 :message "enter login:"}
                 "user" {:login "alice", :id 1, :password "1234"}})
 
 (def login-entered {"login_state" {:conn_id 1 :num_logins 1 :num_passwords 1 :login "alice"}
-                    "msg" {:conn-id 1 :message "enter password:"}
+                    "msg-to-client" {:conn-id 1 :message "enter password:"}
                     "user" {:login "alice", :id 1, :password "1234"}})
 
-(def login-succeeded {"msg" {:conn-id 1 :message "login successful"}
+(def login-succeeded {"msg-to-client" {:conn-id 1 :message "login successful"}
                       "user" {:login "alice", :id 1, :password "1234"}
-                      "msg_to_server" {:conn_id 1, :user_id 1, :type :user_logged_in}})
+                      "msg-to-server" {:conn-id 1, :user-id 1, :type :user-logged-in}})
 
 (def first-wrong-password {"login_state" {:conn_id 1 :num_logins 2 :num_passwords 1 :login "alice"}
-                           "msg" {:conn-id 1 :message "enter login:"}
+                           "msg-to-client" {:conn-id 1 :message "enter login:"}
                            "user" {:login "alice", :id 1, :password "1234"}})
 
-(def login-failed {"msg" {:conn-id 1 :message "enter password:"}
+(def login-failed {"msg-to-client" {:conn-id 1 :message "enter password:"}
                    "user" {:login "alice", :id 1, :password "1234"}
-                   "msg_to_server" {:type "login-max-attempts" :conn_id 1}})
+                   "msg-to-server" {:type "login-max-attempts" :conn-id 1}})
 
 (deftest test-login-success-first-try
   (disp/register-daemon  (first (disp/filter-classpath-namespaces #"\.login$")))

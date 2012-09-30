@@ -12,4 +12,5 @@
 (defmulti delete dispatch)
 (defmulti get-messages dispatch)
 (defmulti msg-client dispatch)
+(defmulti msg-server dispatch)
 (defmulti is-logging-in? dispatch)

@@ -5,6 +5,6 @@
 
 (defn process-msg
   [m]
-  (data/insert [["msg_to_server" (assoc m :type :banner)]
-                ["msg_to_server" (assoc m :type :menu)]])
+  (data/msg-server (assoc m :type :banner))
+  (data/msg-server (assoc m :type :menu))
   nil)

@@ -27,12 +27,23 @@
           (println rs)
           (->> (map :json rs) (map json/read-json) doall))))))
 
+(defn insert-json
+  [tbl m]
+  (jdbc/with-connection db
+    (jdbc/insert-records tbl {:json (json/json-str m)})))
+
 ;"Put a JSON message in the client queue"
 (defmethod zombunity.data/msg-client ::hsqldb
   [m]
   (println "sending message to client: " m)
-  (jdbc/with-connection db
-    (jdbc/insert-records "msg_to_client" {:json (json/json-str m)})))
+  (insert-json "msg_to_client" m))
+
+;"Put a JSON message in the client queue"
+(defmethod zombunity.data/msg-server ::hsqldb
+  [m]
+  (println "sending message to server: " m)
+  (insert-json "msg_to_server" m))
+
 
 ;"Run a select statment and return the results as a list of maps"
 (defmethod zombunity.data/select ::hsqldb
