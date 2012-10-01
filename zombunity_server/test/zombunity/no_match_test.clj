@@ -1,4 +1,4 @@
-(ns zombunity.no-message-test
+(ns zombunity.no_match_test
   (:use clojure.test)
   (:require [zombunity.dispatch :as disp]
             [zombunity.data :as data]
