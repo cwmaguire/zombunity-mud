@@ -32,7 +32,7 @@
   (println "Got message: " msg)
   (let [msg (assoc msg :user-id (@conn-users conn-id user-id))
         fn-filters (get @daemon-fns (keyword type) (get @daemon-fns nil))
-        fns (map :fn (filter #(if-let [f (:filter %)] (f msg) true) fn-filters))]
+        fns (doall (map :fn (filter #(if-let [f (:filter %)] (f msg) true) fn-filters)))]
     (doall (map #(% msg) fns))))
 
 (defn dispatch-new-messages
