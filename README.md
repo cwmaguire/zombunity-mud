@@ -10,9 +10,11 @@ Scroll to the bottom for a text version of "Getting Started"
 YouTube Project Updates:
 --------------------------------------------
 [Live DB Unit Tests & Deployment Scripts] (http://www.youtube.com/watch?v=Xb-_RwmZaZc) <br>
+[Milestone Reached!] (http://www.youtube.com/watch?v=1IsLhGv5zyM)<br>
 
 YouTube Code Tutorials (Latest to Earliest):
 --------------------------------------------
+[Daemon Filtering] (http://www.youtube.com/watch?v=dtMhSVFqHCo&feature=youtu.be) <br>
 [Data Interface & Custom Data Test Data Providers] (http://www.youtube.com/watch?v=4wQIEikNlbs) <br>
 [Bash Deployment Scripts for Linux] (http://youtu.be/UXCHh9uM14s) <br>
 [Getting Started on Heroku] (http://www.youtube.com/watch?v=44YNnFkVeJA) <br>
