@@ -11,3 +11,6 @@ pom.xml
 *.js
 *~
 *.log
+*.iml
+*/lib/
+*/misc.xml

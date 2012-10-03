@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/zombunity-mud.iml" filepath="$PROJECT_DIR$/zombunity-mud.iml" />
       <module fileurl="file://$PROJECT_DIR$/zombunity_http/zombunity_http.iml" filepath="$PROJECT_DIR$/zombunity_http/zombunity_http.iml" />
       <module fileurl="file://$PROJECT_DIR$/zombunity_server/zombunity_server.iml" filepath="$PROJECT_DIR$/zombunity_server/zombunity_server.iml" />
       <module fileurl="file://$PROJECT_DIR$/zombunity_web/zombunity_web.iml" filepath="$PROJECT_DIR$/zombunity_web/zombunity_web.iml" />
