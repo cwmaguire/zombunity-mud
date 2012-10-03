@@ -15,6 +15,12 @@
   (let [elem (helper/get-element "text")]
     (set! (.-value elem) (str text "\n" (.-value elem)))))
 
+(defn display-menu
+  "Display any :text event text in the generic 'text' area"
+  [text]
+  (let [elem (helper/get-element "text")]
+    (set! (.-value elem) (str text "\n" (.-value elem)))))
+
 (defn send
   "Send text to the server"
   []
@@ -53,4 +59,5 @@
   (dispatch/register-listener :message display-text)
   (dispatch/register-listener :text display-text)
   (dispatch/register-listener :conn-open show-connected)
-  (dispatch/register-listener :conn-close show-disconnected))
+  (dispatch/register-listener :conn-close show-disconnected)
+  (dispatch/register-listener :menu display-menu))

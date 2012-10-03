@@ -1,6 +1,7 @@
 (ns zombunity.websocket
   (:require [goog.net.WebSocket :as ws]
             [goog.dom :as dom]
+            [goog.json :as json]
             [zombunity.dispatch :as dispatch]
             [clojure.string :as string]))
 
@@ -13,11 +14,11 @@
 (defn on-close [evt]
   (dispatch/dispatch :conn-close evt))
 
-; We'll need to change this to dispatch on the event type
-; perhaps by peeling apart the JSON to get the event
 (defn on-msg [evt]
   ;(js/alert (str "Received Message! " (.-message evt)))
-  (dispatch/dispatch :message (.-message evt)))
+  (let [msg (json/parse (.-message evt))]
+    (js/alert (str "Received Message! " msg))
+    (dispatch/dispatch (:type msg) msg)))
 
 (defn send [message]
   (.send @websocket (str "{\"type\":\"text\", \"text\":\"" message "\"}")))

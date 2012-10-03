@@ -4,7 +4,7 @@
 
 (def msg-filters [:menu])
 
-(def menu-msgs ["Menu:" "login" "register"])
+(def menu-msgs {:type :menu :title "Menu" :items ["Login" "Register"]})
 
 (defn process-msg
   [msg]
