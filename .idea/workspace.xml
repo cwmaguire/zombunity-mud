@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e027668-d441-4607-99d3-de6b0ad8fbef" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zombunity_server/src/zombunity/daemon/menu.clj" afterPath="$PROJECT_DIR$/zombunity_server/src/zombunity/daemon/menu.clj" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zombunity_web/src/zombunity/gui.cljs" afterPath="$PROJECT_DIR$/zombunity_web/src/zombunity/gui.cljs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zombunity_web/src/zombunity/websocket.cljs" afterPath="$PROJECT_DIR$/zombunity_web/src/zombunity/websocket.cljs" />
@@ -75,10 +71,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name=".gitignore" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="6" selection-start="39" selection-end="39" vertical-scroll-proportion="0.09770115">
+            <state line="4" column="6" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -165,10 +161,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gui.cljs" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="gui.cljs" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/zombunity_web/src/zombunity/gui.cljs">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="16" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0">
+            <state line="4" column="16" selection-start="129" selection-end="129" vertical-scroll-proportion="0.09770115">
               <folding />
             </state>
           </provider>
@@ -935,13 +931,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zombunity_web/src/zombunity/gui.cljs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="16" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/zombunity_web/src/zombunity/build.clj">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -984,6 +973,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="6" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/zombunity_web/src/zombunity/websocket.cljs">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="38" selection-start="413" selection-end="413" vertical-scroll-proportion="0.0">
@@ -991,9 +987,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/zombunity_web/src/zombunity/gui.cljs">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="6" selection-start="39" selection-end="39" vertical-scroll-proportion="0.09770115">
+        <state line="4" column="16" selection-start="129" selection-end="129" vertical-scroll-proportion="0.09770115">
           <folding />
         </state>
       </provider>
