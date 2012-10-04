@@ -14,6 +14,7 @@ YouTube Project Updates (Newest to Oldest):
 
 YouTube Code Tutorials (Newest to Oldest):
 --------------------------------------------
+[Debug JavaScript on Jetty Instead of Webbit] (http://www.youtube.com/watch?v=cyv2vzhJQEo&feature=youtu.be) <br>
 [Daemon Filtering] (http://www.youtube.com/watch?v=dtMhSVFqHCo&feature=youtu.be) <br>
 [Data Interface & Custom Data Test Data Providers] (http://www.youtube.com/watch?v=4wQIEikNlbs) <br>
 [Bash Deployment Scripts for Linux] (http://youtu.be/UXCHh9uM14s) <br>
