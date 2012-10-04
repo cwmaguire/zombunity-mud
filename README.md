@@ -9,6 +9,7 @@ Scroll to the bottom for a text version of "Getting Started"
 
 YouTube Project Updates (Newest to Oldest):
 --------------------------------------------
+[GUI Improvements] (http://youtu.be/IHk-2XaKb6A) <br>
 [Milestone Reached!] (http://www.youtube.com/watch?v=1IsLhGv5zyM)<br>
 [Live DB Unit Tests & Deployment Scripts] (http://www.youtube.com/watch?v=Xb-_RwmZaZc) <br>
 
