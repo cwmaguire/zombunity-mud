@@ -1,6 +1,8 @@
 (ns zombunity.gui
   (:require [zombunity.dom-helper :as helper]
-            [zombunity.dispatch :as dispatch]))
+            [zombunity.dispatch :as dispatch]
+            [zombunity.menu :as menu]
+            [clojure.string :as string]))
 
 (defn connect []
   (dispatch/dispatch :connect nil))
@@ -12,14 +14,7 @@
 (defn display-text
   "Display any :text event text in the generic 'text' area"
   [text]
-  (let [elem (helper/get-element "text")]
-    (set! (.-value elem) (str text "\n" (.-value elem)))))
-
-(defn display-menu
-  "Display any :text event text in the generic 'text' area"
-  [text]
-  (let [elem (helper/get-element "text")]
-    (set! (.-value elem) (str text "\n" (.-value elem)))))
+  (helper/insert_text_node "text" text))
 
 (defn text-key-up
   "Send text to the server"
@@ -29,10 +24,34 @@
       (dispatch/dispatch :input (helper/get-value "mud-input"))
       (helper/clear "mud-input"))))
 
+(defn get-menu-data
+  "break a pipe-delimited string into a title and list of items"
+  [s]
+  (let [items (doall (filter (fn [x] (not (= x "|"))) (string/split s (js/RegExp. "|" ""))))]
+    items))
+
+(defn send-text
+  "Send the specified text to the server"
+  [text]
+  (dispatch/dispatch :input text))
+
 (defn send
   "Send text to the server"
   []
   (dispatch/dispatch :input (helper/get-value "mud-input")))
+
+(defn display-menu
+  "Display a menu using a function for onClick"
+  [msg]
+  (helper/insert-child (menu/menu (:title msg) (:items msg) send-text)))
+
+(defn create-debug-menu
+  "Take the text from input and create a menu from it"
+  []
+  (let [items (get-menu-data (helper/get-value "mud-input"))]
+    ;(helper/insert-text-node "text" (first items))
+    ;(helper/insert-text-node "text" (str (second items) "," (nth items 2)))
+    (helper/insert-child "text" (menu/menu (first items) (rest items) send-text))))
 
 (defn text
   "Testing out a local event"
