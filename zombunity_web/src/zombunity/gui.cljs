@@ -21,6 +21,14 @@
   (let [elem (helper/get-element "text")]
     (set! (.-value elem) (str text "\n" (.-value elem)))))
 
+(defn text-key-up
+  "Send text to the server"
+  [event]
+  (if (= (.-keyCode event) 13)
+    (do
+      (dispatch/dispatch :input (helper/get-value "mud-input"))
+      (helper/clear "mud-input"))))
+
 (defn send
   "Send text to the server"
   []
@@ -61,3 +69,9 @@
   (dispatch/register-listener :conn-open show-connected)
   (dispatch/register-listener :conn-close show-disconnected)
   (dispatch/register-listener :menu display-menu))
+
+(defn debug-mode
+  "Unregister the websocket listeners and register mock listeners in there place"
+  []
+  (dispatch/unregister-listeners :input)
+  (dispatch/register-listener :input display-text))

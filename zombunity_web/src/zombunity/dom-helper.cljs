@@ -10,3 +10,13 @@
   "Retrieves the value of an HTML element by id"
   [id]
   (.-value (dom/getElement id)))
+
+(defn set-value
+  "Sets the value of an HTML element by id"
+  [id val]
+  (set! (.-value (dom/getElement id)) val))
+
+(defn clear
+  "Clears out the value of an HTML element by id"
+  [id]
+  (set-value id ""))

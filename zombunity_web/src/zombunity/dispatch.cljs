@@ -10,6 +10,12 @@
   ;(js/alert "Register fn for event " event-key)
   (swap! listeners assoc event-key (conj (or (get @listeners event-key) #{}) f)))
 
+(defn unregister-listeners
+  "Unregister all functions for event-key"
+  [event-key]
+  ;(js/alert "Register fn for event " event-key)
+  (swap! listeners dissoc event-key ))
+
 (defn dispatch
   "Given an event key, fire all functions registered for that event with the event data as a map"
   [event-key m]
