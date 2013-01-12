@@ -180,9 +180,11 @@ This is slowly evolving to require less and less steps
 
     open a command prompt to the project dir and run "lein run"
 
+
 1. Build the JavaScript
 
     open a command prompt to the project dir and run "lein run -m zombunity.build/build"
+
 
 1. Copy libs from local repo to project lib folder
 
@@ -192,7 +194,7 @@ This is slowly evolving to require less and less steps
 
     Assuming %SERV_PATH% is the path to your zombunity_server directory (e.g. c:\dev\zombunity\zombunity_server)
 
-    > java -cp %SERV_PATH%\lib\clojure-1.4.0.jar;%SERV_PATH%\lib\*;%SERV_PATH%\src\; clojure.main -i %SERV_PATH%\src\zombunity\dispatch.clj -r
+    > java -cp %SERV_PATH%\lib\clojure-1.4.0.jar;%SERV_PATH%\lib\\*;%SERV_PATH%\src\; clojure.main -i %SERV_PATH%\src\zombunity\dispatch.clj -r
 
     This will load up the dispatch script (-i) but keep the REPL open (-r)
 
