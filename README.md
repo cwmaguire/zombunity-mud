@@ -185,6 +185,15 @@ This is slowly evolving to require less and less steps
 
     open a command prompt to the project dir and run "lein run -m zombunity.build/build"
 
+    Currently I'm having to manually massage the Google Closure deps:
+        - add a dependency line to goog/deps.js for useragent/jscript:
+
+    > goog.addDependency("useragent/jscript.js", ['goog.userAgent.jscript'], ['goog.string']);
+
+        - add "goog.userAgent.jscript" to the list of dependencies for goog.string.StringBuffer
+
+    > goog.addDependency("string/stringbuffer.js", ['goog.string.StringBuffer'], ['goog.userAgent.jscript']);
+
 
 1. Copy libs from local repo to project lib folder
 
