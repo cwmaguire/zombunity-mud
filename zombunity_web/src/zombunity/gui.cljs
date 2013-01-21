@@ -27,7 +27,7 @@
 (defn get-menu-data
   "break a pipe-delimited string into a title and list of items"
   [s]
-  (let [items (doall (filter (fn [x] (not (= x "|"))) (string/split s (js/RegExp. "|" ""))))]
+  (let [items (doall (filter (fn [x] (not (= x "|"))) (string/split s (js/RegExp. "\\|" ""))))]
     items))
 
 (defn send-text
@@ -43,7 +43,7 @@
 (defn display-menu
   "Display a menu using a function for onClick"
   [msg]
-  (helper/insert-child (menu/menu (:title msg) (:items msg) send-text)))
+  (helper/insert-child "some_id" (menu/menu (:title msg) (:items msg) send-text)))
 
 (defn create-debug-menu
   "Take the text from input and create a menu from it"
