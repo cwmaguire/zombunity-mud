@@ -160,6 +160,13 @@ If the database goes down, the HTTP and MUD servers should be restarted.
 
 ### Windows
 
+#### Arg!
+
+Webbit won't load all of the ClojureScript JavaScript under Windows, so the page won't load properly.
+
+You can test out the client side code by itself (e.g. to debug menus and such) by running the client-side
+code under Jetty; see http://www.youtube.com/watch?v=cyv2vzhJQEo&feature=youtu.be
+
 This is slowly evolving to require less and less steps
 
 1. Clone the git repo
