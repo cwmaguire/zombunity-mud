@@ -5,9 +5,9 @@
             [zombunity.data.simple-data :as simple-data]))
 
 (def multi-word-data [["chat_msg" {:msg "1 2 3"}]])
-(def multi-word-server-msg {:type :all-clients :message ":type :chat :text \"1 2 3\""})
+(def multi-word-server-msg {:type :all-clients :message {:type :chat :text "1 2 3"}})
 (def single-word-data [["chat_msg" {:msg "1"}]])
-(def single-word-server-msg {:type :all-clients :message ":type :chat :text \"1\""})
+(def single-word-server-msg {:type :all-clients :message {:type :chat :text "1"}})
 
 (deftest test-chat
   (disp/register-daemon  (first (disp/filter-classpath-namespaces #"\.chat$")))

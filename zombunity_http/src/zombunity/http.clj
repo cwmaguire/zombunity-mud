@@ -39,7 +39,7 @@
 (defn proc-msgs-from-server
   []
   (let [msgs (db/get-messages)]
-    (doall (map (fn [{:keys [conn-id message]}] (send-to-connection conn-id message)) msgs))))
+    (doall (map (fn [{:keys [conn-id message]}] (send-to-connection conn-id (json/json-str message))) msgs))))
 
 (defn start-processing-messages
   []
