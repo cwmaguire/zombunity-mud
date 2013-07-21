@@ -1,0 +1,1 @@
+xcopy d:\dev_zombunity\zombunity\zombunity_http\resource\*.* d:\dev\jetty\zu /D /S /Y
