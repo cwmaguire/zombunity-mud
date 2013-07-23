@@ -10,5 +10,5 @@
     (if (not (empty? text))
       (do
         (data/insert [["chat_msg" {:msg (apply str text)}]])
-        (data/msg-server {:type :all-clients :message (str ":type :chat :text \"" (apply str text) "\"")}))))
+        (data/msg-server {:type :all-clients :message {:type :chat :text (apply str text)}}))))
   nil)

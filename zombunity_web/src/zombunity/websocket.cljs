@@ -31,7 +31,8 @@
     (.addEventListener websocket-temp ws/EventType.MESSAGE on-msg)
     (.addEventListener websocket-temp ws/EventType.OPENED on-open)
     (.addEventListener websocket-temp ws/EventType.CLOSED on-close)
-    (.open websocket-temp (str "ws://" (second (re-find #"//(.*)/" (.-URL (dom/getDocument)))) "/websocket"))))
+    (js/alert (str "ws://" (second (re-find #"//(.*)/zu/" (.-URL (dom/getDocument)))) "/websocket"))
+    (.open websocket-temp (str "ws://" (second (re-find #"//(.*)/zu/" (.-URL (dom/getDocument)))) "/websocket"))))
 
 
 (defn disconnect [_]

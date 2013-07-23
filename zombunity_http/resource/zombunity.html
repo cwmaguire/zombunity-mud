@@ -17,14 +17,15 @@
 <span id="conn-disconn-flg" style="color:red;">disconnected</span>
 <br><br>
 
-MUD Commands: <input id="mud-input" type="text" value=""/>
+MUD Commands: <input id="mud-input" type="text" value="" style="width:200px;" onkeyup="zombunity.gui.text_key_up(event);"/>
 
 <button onclick="zombunity.gui.send();">Send</button>
-<button onclick="zombunity.gui.text();">Add as text</button>
+<button onclick="zombunity.gui.debug_mode();">Debug Mode</button>
+<button onclick="zombunity.gui.create_debug_menu();">Menu</button>
 
 <br>
 <br>
-Text: <textarea id="text">Some text to start</textarea>
+<div id="text" style="width:500px; height:500px;border:1px solid green;"></div>
 
 </body>
 </html>

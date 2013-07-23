@@ -9,11 +9,13 @@ Scroll to the bottom for a text version of "Getting Started"
 
 YouTube Project Updates (Newest to Oldest):
 --------------------------------------------
+[GUI Improvements] (http://youtu.be/IHk-2XaKb6A) <br>
 [Milestone Reached!] (http://www.youtube.com/watch?v=1IsLhGv5zyM)<br>
 [Live DB Unit Tests & Deployment Scripts] (http://www.youtube.com/watch?v=Xb-_RwmZaZc) <br>
 
 YouTube Code Tutorials (Newest to Oldest):
 --------------------------------------------
+[Debug JavaScript on Jetty Instead of Webbit] (http://www.youtube.com/watch?v=cyv2vzhJQEo&feature=youtu.be) <br>
 [Daemon Filtering] (http://www.youtube.com/watch?v=dtMhSVFqHCo&feature=youtu.be) <br>
 [Data Interface & Custom Data Test Data Providers] (http://www.youtube.com/watch?v=4wQIEikNlbs) <br>
 [Bash Deployment Scripts for Linux] (http://youtu.be/UXCHh9uM14s) <br>
@@ -158,6 +160,13 @@ If the database goes down, the HTTP and MUD servers should be restarted.
 
 ### Windows
 
+#### Arg!
+
+Webbit won't load all of the ClojureScript JavaScript under Windows, so the page won't load properly.
+
+You can test out the client side code by itself (e.g. to debug menus and such) by running the client-side
+code under Jetty; see http://www.youtube.com/watch?v=cyv2vzhJQEo&feature=youtu.be
+
 This is slowly evolving to require less and less steps
 
 1. Clone the git repo
@@ -178,9 +187,20 @@ This is slowly evolving to require less and less steps
 
     open a command prompt to the project dir and run "lein run"
 
+
 1. Build the JavaScript
 
     open a command prompt to the project dir and run "lein run -m zombunity.build/build"
+
+    Currently I'm having to manually massage the Google Closure deps:
+        - add a dependency line to goog/deps.js for useragent/jscript:
+
+    > goog.addDependency("useragent/jscript.js", ['goog.userAgent.jscript'], ['goog.string']);
+
+        - add "goog.userAgent.jscript" to the list of dependencies for goog.string.StringBuffer
+
+    > goog.addDependency("string/stringbuffer.js", ['goog.string.StringBuffer'], ['goog.userAgent.jscript']);
+
 
 1. Copy libs from local repo to project lib folder
 
@@ -190,7 +210,7 @@ This is slowly evolving to require less and less steps
 
     Assuming %SERV_PATH% is the path to your zombunity_server directory (e.g. c:\dev\zombunity\zombunity_server)
 
-    > java -cp %SERV_PATH%\lib\clojure-1.4.0.jar;%SERV_PATH%\lib\*;%SERV_PATH%\src\; clojure.main -i %SERV_PATH%\src\zombunity\dispatch.clj -r
+    > java -cp %SERV_PATH%\lib\clojure-1.4.0.jar;%SERV_PATH%\lib\\*;%SERV_PATH%\src\; clojure.main -i %SERV_PATH%\src\zombunity\dispatch.clj -r
 
     This will load up the dispatch script (-i) but keep the REPL open (-r)
 

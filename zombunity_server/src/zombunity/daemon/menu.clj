@@ -1,6 +1,5 @@
 (ns zombunity.daemon.menu
-  (:require [zombunity.data :as data]
-            [clojure.data.json :as json]))
+  (:require [zombunity.data :as data]))
 
 (def msg-filters [:menu])
 
@@ -8,5 +7,5 @@
 
 (defn process-msg
   [msg]
-  (data/msg-client {:conn-id (:conn-id msg) :message (json/json-str menu-msgs)})
+  (data/msg-client {:conn-id (:conn-id msg) :message menu-msgs})
   nil)
