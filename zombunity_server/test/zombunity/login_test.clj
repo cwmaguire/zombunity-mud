@@ -40,7 +40,9 @@
 
   (disp/dispatch {:type "1234" :conn-id 1})
 
-  (is (= login-succeeded @login-data/data) "Password entered"))
+  (is (= login-succeeded @login-data/data) "Password entered")
+
+  (is (= nil (get "login_state" @login-data/data))))
 
 (deftest test-login-fail-once-then-succeed
   (disp/register-daemon  (first (disp/filter-classpath-namespaces #"\.login$")))
