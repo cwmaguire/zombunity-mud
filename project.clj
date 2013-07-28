@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :main zombunity.http
   :repositories {"project" "file:repo"}
+  :injections [(require '[redl core complete])]
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [org.webbitserver/webbit "0.4.14"]
                  [org.clojure/data.json "0.1.3"]
@@ -13,6 +14,7 @@
                  [org.clojure/java.jdbc "0.2.3"]
                  [org.hsqldb/hsqldb "2.2.8"]
                  [org.hsqldb/sqltool "2.2.8"]
+                 [redl "0.1.0"]
                  [local/clj "1.0.0"]
                  [local/cljs "1.0.0"]
                  [local/goog "1.0.0"]
