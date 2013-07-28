@@ -9,7 +9,7 @@
 (def client-msg {:type :client :message msg :conn-id conn-id :user-id nil})
 
 (deftest test-chat
-  (disp/register-daemon  (first (disp/filter-classpath-namespaces #"\..*client$")))
+  (disp/register-daemon  (first (disp/filter-classpath-namespaces #"\..*msg-client$")))
 
   (data/set-target :zombunity.data.simple-data/simple)
 
