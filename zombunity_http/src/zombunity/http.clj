@@ -1,20 +1,13 @@
 (ns zombunity.http
-  (:import [org.webbitserver WebServer WebServers WebSocketHandler]
-           [org.webbitserver.handler StaticFileHandler]
-           [java.util TimerTask Timer])
+  (:import [java.util TimerTask Timer])
   (:require [zombunity.dbh :as db]
             [clojure.data.json :as json]
-            [clojure.string :as s]))
+            [clojure.string :as s]
+            [ring.adapter.jetty]))
 
 (def webserver (atom nil))
 (def executorSvc (atom nil))
 (def curr-conn-id (atom 0))
-
-; map IDs to connections
-(def id-conns (atom {}))
-
-; map connections to IDs
-(def conn-ids (atom {}))
 
 (defn jsonify
   "Wrap the text from the client in a proper server message with type text"
@@ -30,28 +23,24 @@
     (db/msg-server json-plus-client-id)
     (println "HTTP sent server message: " json-plus-client-id)))
 
-(defn send-to-connection
-  [id message]
-  (println "HTTP sending [" message "] to client connection " id)
-  (if-let [conn (get @id-conns id)]
-    (.send conn message)))
-
 (defn proc-msgs-from-server
   []
   (let [msgs (db/get-messages)]
     (doall (map (fn [{:keys [conn-id message]}] (send-to-connection conn-id (json/json-str message))) msgs))))
 
-(defn start-processing-messages
-  []
-  (let [task (proxy [TimerTask] []
-    (run [] (proc-msgs-from-server)))]
-    (.schedule (new Timer true) task (long 0) (long 2000))))
-
 (defn get-proj-path
   []
   (s/replace (. (java.io.File. ".") getCanonicalPath) #"\\" "/"))
 
-(defn -main []
+(defn handler [request]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body "Hello World"})
+
+(defn -main
+  (run-jetty handler {:port 3000}))
+
+(defn -main-webbit []
   (let [webbitServer (doto (WebServers/createWebServer 8080)
                         (.add "/websocket"
                           (proxy [WebSocketHandler] []
