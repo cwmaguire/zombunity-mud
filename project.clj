@@ -9,7 +9,7 @@
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [org.clojure/data.json "0.1.3"]
                  [org.clojure/java.classpath "0.2.0"]
-                 [org.clojure/tools.namespace "0.1.3"]
+                 [org.clojure/tools.namespace "0.2.4"]
                  [org.clojure/java.jdbc "0.2.3"]
                  [org.hsqldb/hsqldb "2.2.8"]
                  [org.hsqldb/sqltool "2.2.8"]
