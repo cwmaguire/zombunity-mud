@@ -6,7 +6,7 @@
   :main zombunity.http
   :repositories {"project" "file:repo"}
   :injections [(require '[redl core complete])]
-  :dependencies [[org.clojure/clojure "1.4.0"]
+  :dependencies [[org.clojure/clojure "1.5.0"]
                  [org.clojure/data.json "0.1.3"]
                  [org.clojure/java.classpath "0.2.0"]
                  [org.clojure/tools.namespace "0.2.4"]
